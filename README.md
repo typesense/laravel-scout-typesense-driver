@@ -1,4 +1,4 @@
-# laravel-scout-typesense-engine
+# Laravel Scout Typesense Engine
 Typesense engine for laravel/scout https://github.com/typesense/typesense .
 
 This package makes it easy to add full text search support to your models with Laravel 5.3 to 7.0.
