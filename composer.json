@@ -1,0 +1,54 @@
+{
+  "name": "devloopsnet/laravel-typesense",
+  "description": "Typesense laravel/scout engine",
+  "keywords": [
+    "laravel",
+    "typesense",
+    "search"
+  ],
+  "type": "library",
+  "homepage": "https://www.devloops.net",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Abdullah Al-Faqeir",
+      "email": "abdullah@devloops.net",
+      "homepage": "https://www.devloops.net",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Devloops\\LaravelTypesense\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Devloops\\LaravelTypesense\\TypesenseServiceProvider"
+      ],
+      "aliases": {
+        "Typesense": "Devloops\\LaravelTypesense\\TypesenseFacade"
+      }
+    }
+  },
+  "require": {
+    "php": "~7.2",
+    "laravel/scout": "7.*|^8.0",
+    "illuminate/bus": "~5.4|^6.0|^7.0",
+    "illuminate/contracts": "~5.4|^6.0|^7.0",
+    "illuminate/database": "~5.4|^6.0|^7.0",
+    "illuminate/pagination": "~5.4|^6.0|^7.0",
+    "illuminate/queue": "~5.4|^6.0|^7.0",
+    "illuminate/support": "~5.4|^6.0|^7.0",
+    "devloopsnet/typesens-php": "^1.0"
+  },
+  "suggest": {
+    "devloopsnet/typesens-php": "Required to use the Typesense php client."
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0|^9.0",
+    "mockery/mockery": "^1.3"
+  }
+}
