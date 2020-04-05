@@ -153,13 +153,6 @@ The `searchable()` method will chunk the results of the query and add the record
 // You may also add records via collections...
 `$posts->searchable();`
 
-When using constraints apply it after the constraints are added to the query, as seen in the above example.
-
-## OrderBy
-An `orderBy()` statement can now be applied to the search query similar to the `where()` statement.
-
-When using constraints apply it after the constraints are added to the query, as seen in the above example.
-
 ## Author
 
 - [Abdullah Al-Faqeir](https://github.com/abdullahfaqeir)
