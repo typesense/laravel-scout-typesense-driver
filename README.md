@@ -16,7 +16,7 @@ This package makes it easy to add full text search support to your models with L
 You can install the package via composer:
 
 ``` bash
-composer require devloopsnet/laravel-scout-typesense-engine
+composer require devloopsnet/laravel-typesense
 ```
 
 Add the service provider:
