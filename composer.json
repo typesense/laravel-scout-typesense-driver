@@ -42,7 +42,7 @@
     "illuminate/pagination": "^6.0|^7.0",
     "illuminate/queue": "^6.0|^7.0",
     "illuminate/support": "^6.0|^7.0",
-    "devloopsnet/typesens-php": "^2.0"
+    "devloopsnet/typesens-php": "^2.0.2"
   },
   "suggest": {
     "devloopsnet/typesens-php": "Required to use the Typesense php client."
