@@ -25,18 +25,13 @@ class TypesenseServiceProvider extends ServiceProvider
           static function ($app) {
               $client = new Client(
                 [
-                  'master_node'        => config(
-                    'scout.typesensesearch.master_node',
-                    []
-                  ),
-                  'read_replica_nodes' => !config(
-                    'scout.typesensesearch.enabled_read_replica',
-                    false
-                  ) ? [] : config('scout.typesensesearch.read_replicas', []),
-                  'timeout_seconds'    => config(
-                    'scout.typesensesearch.timeout',
-                    2.0
-                  ),
+                  'api_key'                       => config('scout.typesensesearch.api_key', ''),
+                  'nodes'                         => config('scout.typesensesearch.nodes', []),
+                  'nearest_node'                  => config('scout.typesensesearch.nearest_node', []),
+                  'connection_timeout_seconds'    => config('scout.typesensesearch.connection_timeout_seconds', 2.0),
+                  'healthcheck_interval_seconds'  => config('scout.typesensesearch.healthcheck_interval_seconds', 60),
+                  'num_retries'                   => config('scout.typesensesearch.num_retries', 3),
+                  'retry_interval_seconds'        => config('scout.typesensesearch.retry_interval_seconds', 1.0),
                 ]
               );
               return new TypesenseSearchEngine(new Typesense($client));
@@ -60,18 +55,13 @@ class TypesenseServiceProvider extends ServiceProvider
           static function () {
               $client = new Client(
                 [
-                  'master_node'        => config(
-                    'scout.typesensesearch.master_node',
-                    []
-                  ),
-                  'read_replica_nodes' => !config(
-                    'scout.typesensesearch.enabled_read_replica',
-                    false
-                  ) ? [] : config('scout.typesensesearch.read_replicas', []),
-                  'timeout_seconds'    => config(
-                    'scout.typesensesearch.timeout',
-                    2.0
-                  ),
+                  'api_key'                       => config('scout.typesensesearch.api_key', ''),
+                  'nodes'                         => config('scout.typesensesearch.nodes', []),
+                  'nearest_node'                  => config('scout.typesensesearch.nearest_node', []),
+                  'connection_timeout_seconds'    => config('scout.typesensesearch.connection_timeout_seconds', 2.0),
+                  'healthcheck_interval_seconds'  => config('scout.typesensesearch.healthcheck_interval_seconds', 60),
+                  'num_retries'                   => config('scout.typesensesearch.num_retries', 3),
+                  'retry_interval_seconds'        => config('scout.typesensesearch.retry_interval_seconds', 1.0),
                 ]
               );
 
