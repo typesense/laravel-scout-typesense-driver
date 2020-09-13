@@ -52,22 +52,25 @@ In your `config/scout.php` add:
 ```php
 
 'typesensesearch' => [
-    'master_node' => [
-      'host' => 'HOST',
-      'port' => '8108',
-      'protocol' => 'http',
-      'api_key' => 'API_KEY',
-    ],
-    'enabled_read_replica' => FALSE,
-    'read_replica_nodes' => [
+    'api_key'         => 'abcd',
+    'nodes'           => [
       [
-        'host' => 'HOST',
-        'port' => '8108',
+        'host'     => 'localhost',
+        'port'     => '8108',
+        'path'     => '',
         'protocol' => 'http',
-        'api_key' => 'API_KEY',
       ],
     ],
-    'timeout' => 2,
+    'nearest_node'    => [
+        'host'     => 'localhost',
+        'port'     => '8108',
+        'path'     => '',
+        'protocol' => 'http',
+    ]
+    'connection_timeout_seconds'   => 2,
+    'healthcheck_interval_seconds' => 30,    
+    'num_retries'                  => 3,
+    'retry_interval_seconds'       => 1,
   ],
 ```
 
