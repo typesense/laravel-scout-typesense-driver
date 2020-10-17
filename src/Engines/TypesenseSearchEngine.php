@@ -90,14 +90,16 @@ class TypesenseSearchEngine extends Engine
     public function paginate(Builder $builder, $perPage, $page)
     {
         return $this->performSearch(
-          $builder,
-          [
-            'q'        => $builder->query,
-            'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'filter_by' => $this->filters($builder),
-            'per_page' => $perPage,
-            'page'     => $page,
-          ]
+            $builder,
+            array_filter(
+                [
+                    'q'        => $builder->query,
+                    'query_by' => implode(',', $builder->model->typesenseQueryBy()),
+                    'filter_by' => $this->filters($builder),
+                    'per_page' => $perPage,
+                    'page'     => $page,
+                ]
+            )
         );
     }
 
