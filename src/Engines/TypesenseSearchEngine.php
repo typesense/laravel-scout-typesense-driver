@@ -137,7 +137,7 @@ class TypesenseSearchEngine extends Engine
           static function ($value, $key) {
               return $key . ':=' . $value;
           }
-        )->values()->all();
+        )->values()->implode(' && ');
     }
 
     /**
