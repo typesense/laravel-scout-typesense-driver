@@ -109,7 +109,7 @@ class Post extends Model implements TypesenseSearch
 
     public function getCollectionSchema(): array {
       return [
-        'name' => $this->getTable(),
+        'name' => $this->searchableAs(),
         'fields' => [
           [
             'name' => 'title',
