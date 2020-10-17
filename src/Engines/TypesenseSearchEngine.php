@@ -76,7 +76,7 @@ class TypesenseSearchEngine extends Engine
             [
               'q'        => $builder->query,
               'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-              'fiter_by' => $this->filters($builder),
+              'filter_by' => $this->filters($builder),
               'per_page' => $builder->limit,
               'page'     => 1,
             ]
@@ -94,7 +94,7 @@ class TypesenseSearchEngine extends Engine
           [
             'q'        => $builder->query,
             'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'fiter_by' => $this->filters($builder),
+            'filter_by' => $this->filters($builder),
             'per_page' => $builder->limit,
             'page'     => 1,
           ]
@@ -188,11 +188,7 @@ class TypesenseSearchEngine extends Engine
     public function flush($model): void
     {
         $collection = $this->typesense->getCollectionIndex($model);
-        try {
-            $collection->delete();
-        } catch (TypesenseClientError $e) {
-        } catch (GuzzleException $e) {
-        }
+        $collection->delete();
     }
 
 }
