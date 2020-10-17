@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Devloops\LaravelTypesense;
 
-
-use Devloops\Typesence\Client;
-use Devloops\Typesence\Document;
-use Devloops\Typesence\Collection;
+use Typesense\Client;
+use Typesense\Document;
+use Typesense\Collection;
 use GuzzleHttp\Exception\GuzzleException;
-use Devloops\Typesence\Exceptions\ObjectNotFound;
-use Devloops\Typesence\Exceptions\TypesenseClientError;
+use Typesense\Exceptions\ObjectNotFound;
+use Typesense\Exceptions\TypesenseClientError;
 
 /**
  * Class Typesense
@@ -22,14 +20,14 @@ class Typesense
 {
 
     /**
-     * @var \Devloops\Typesence\Client
+     * @var \Typesense\Client
      */
     private $client;
 
     /**
      * Typesense constructor.
      *
-     * @param   \Devloops\Typesence\Client  $client
+     * @param   \Typesense\Client  $client
      */
     public function __construct(Client $client)
     {
@@ -37,7 +35,7 @@ class Typesense
     }
 
     /**
-     * @return \Devloops\Typesence\Client
+     * @return \Typesense\Client
      */
     public function getClient(): Client
     {
@@ -47,8 +45,8 @@ class Typesense
     /**
      * @param   \Illuminate\Database\Eloquent\Model|\Devloops\LaravelTypesense\Interfaces\TypesenseSearch  $model
      *
-     * @return \Devloops\Typesence\Collection
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @return \Typesense\Collection
+     * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     private function createCollectionFromModel($model): Collection
@@ -72,8 +70,8 @@ class Typesense
     /**
      * @param   \Illuminate\Database\Eloquent\Model  $model
      *
-     * @return \Devloops\Typesence\Collection
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @return \Typesense\Collection
+     * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getCollectionIndex($model): Collection
@@ -82,10 +80,10 @@ class Typesense
     }
 
     /**
-     * @param   \Devloops\Typesence\Collection  $collectionIndex
+     * @param   \Typesense\Collection  $collectionIndex
      * @param                                   $array
      *
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function upsertDocument(Collection $collectionIndex, $array): void
@@ -101,14 +99,14 @@ class Typesense
             $collectionIndex->getDocuments()->create($array);
         } catch (ObjectNotFound $e) {
             $collectionIndex->getDocuments()->create($array);
-        } catch (TypesenseClientError $e) {
-        } catch (GuzzleException $e) {
         }
     }
 
     /**
-     * @param   \Devloops\Typesence\Collection  $collectionIndex
-     * @param                                   $modelId
+     * @param \Typesense\Collection $collectionIndex
+     * @param int                   $modelId
+     * @throws GuzzleException
+     * @throws TypesenseClientError
      */
     public function deleteDocument(Collection $collectionIndex, $modelId): void
     {
@@ -116,11 +114,7 @@ class Typesense
          * @var $document Document
          */
         $document = $collectionIndex->getDocuments()[(string)$modelId];
-        try {
-            $document->delete();
-        } catch (TypesenseClientError $e) {
-        } catch (GuzzleException $e) {
-        }
+        $document->delete();
     }
 
 }

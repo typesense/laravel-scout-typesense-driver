@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Devloops\LaravelTypesense\Typesense;
 use GuzzleHttp\Exception\GuzzleException;
-use Devloops\Typesence\Exceptions\TypesenseClientError;
+use Typesense\Exceptions\TypesenseClientError;
 
 /**
  * Class TypesenseSearchEngine
@@ -106,7 +106,7 @@ class TypesenseSearchEngine extends Engine
      * @param   array                   $options
      *
      * @return array|mixed
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function performSearch(Builder $builder, array $options = [])
