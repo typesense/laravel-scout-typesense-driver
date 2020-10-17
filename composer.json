@@ -35,13 +35,7 @@
   },
   "require": {
     "php": ">=7.4",
-    "laravel/scout": "7.*|^8.0",
-    "illuminate/bus": "^8.0",
-    "illuminate/contracts": "^8.0",
-    "illuminate/database": "^8.0",
-    "illuminate/pagination": "^8.0",
-    "illuminate/queue": "^8.0",
-    "illuminate/support": "^8.0",
+    "laravel/scout": "^8.0",
     "typesense/typesense-php": "^4.0"
   },
   "suggest": {
