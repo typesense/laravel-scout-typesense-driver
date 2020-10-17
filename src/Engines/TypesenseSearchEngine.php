@@ -129,9 +129,9 @@ class TypesenseSearchEngine extends Engine
     /**
      * @param   \Laravel\Scout\Builder  $builder
      *
-     * @return array
+     * @return string
      */
-    protected function filters(Builder $builder): array
+    protected function filters(Builder $builder): string
     {
         return collect($builder->wheres)->map(
           static function ($value, $key) {
