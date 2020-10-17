@@ -49,9 +49,9 @@ class Typesense
      * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    private function createCollectionFromModel($model): Collection
+    private function getOrCreateCollectionFromModel($model): Collection
     {
-        $index = $this->client->getCollections()->{$model->getTable()};
+        $index = $this->client->getCollections()->{$model->searchableAs()};
         try {
             $index->retrieve();
 
@@ -62,8 +62,6 @@ class Typesense
             );
 
             return $this->client->getCollections()->{$model->getTable()};
-        } catch (TypesenseClientError $exception) {
-            throw $exception;
         }
     }
 
@@ -76,7 +74,7 @@ class Typesense
      */
     public function getCollectionIndex($model): Collection
     {
-        return $this->createCollectionFromModel($model);
+        return $this->getOrCreateCollectionFromModel($model);
     }
 
     /**
