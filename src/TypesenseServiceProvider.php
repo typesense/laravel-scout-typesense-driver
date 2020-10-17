@@ -2,7 +2,7 @@
 
 namespace Devloops\LaravelTypesense;
 
-use Devloops\Typesence\Client;
+use Typesense\Client;
 use Laravel\Scout\EngineManager;
 use Illuminate\Support\ServiceProvider;
 use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;

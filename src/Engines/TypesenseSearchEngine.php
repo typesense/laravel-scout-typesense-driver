@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Devloops\LaravelTypesense\Typesense;
 use GuzzleHttp\Exception\GuzzleException;
-use Devloops\Typesence\Exceptions\TypesenseClientError;
+use Typesense\Exceptions\TypesenseClientError;
 
 /**
  * Class TypesenseSearchEngine
@@ -76,7 +76,7 @@ class TypesenseSearchEngine extends Engine
             [
               'q'        => $builder->query,
               'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-              'fiter_by' => $this->filters($builder),
+              'filter_by' => $this->filters($builder),
               'per_page' => $builder->limit,
               'page'     => 1,
             ]
@@ -90,14 +90,16 @@ class TypesenseSearchEngine extends Engine
     public function paginate(Builder $builder, $perPage, $page)
     {
         return $this->performSearch(
-          $builder,
-          [
-            'q'        => $builder->query,
-            'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'fiter_by' => $this->filters($builder),
-            'per_page' => $builder->limit,
-            'page'     => 1,
-          ]
+            $builder,
+            array_filter(
+                [
+                    'q'        => $builder->query,
+                    'query_by' => implode(',', $builder->model->typesenseQueryBy()),
+                    'filter_by' => $this->filters($builder),
+                    'per_page' => $perPage,
+                    'page'     => $page,
+                ]
+            )
         );
     }
 
@@ -106,7 +108,7 @@ class TypesenseSearchEngine extends Engine
      * @param   array                   $options
      *
      * @return array|mixed
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
+     * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function performSearch(Builder $builder, array $options = [])
@@ -129,15 +131,15 @@ class TypesenseSearchEngine extends Engine
     /**
      * @param   \Laravel\Scout\Builder  $builder
      *
-     * @return array
+     * @return string
      */
-    protected function filters(Builder $builder): array
+    protected function filters(Builder $builder): string
     {
         return collect($builder->wheres)->map(
           static function ($value, $key) {
               return $key . ':=' . $value;
           }
-        )->values()->all();
+        )->values()->implode(' && ');
     }
 
     /**
@@ -188,11 +190,7 @@ class TypesenseSearchEngine extends Engine
     public function flush($model): void
     {
         $collection = $this->typesense->getCollectionIndex($model);
-        try {
-            $collection->delete();
-        } catch (TypesenseClientError $e) {
-        } catch (GuzzleException $e) {
-        }
+        $collection->delete();
     }
 
 }
