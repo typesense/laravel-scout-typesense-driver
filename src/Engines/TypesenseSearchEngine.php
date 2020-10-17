@@ -95,8 +95,8 @@ class TypesenseSearchEngine extends Engine
             'q'        => $builder->query,
             'query_by' => implode(',', $builder->model->typesenseQueryBy()),
             'filter_by' => $this->filters($builder),
-            'per_page' => $builder->limit,
-            'page'     => 1,
+            'per_page' => $perPage,
+            'page'     => $page,
           ]
         );
     }
