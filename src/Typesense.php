@@ -61,7 +61,7 @@ class Typesense
               $model->getCollectionSchema()
             );
 
-            return $this->client->getCollections()->{$model->getTable()};
+            return $this->client->getCollections()->{$model->searchableAs()};
         }
     }
 
