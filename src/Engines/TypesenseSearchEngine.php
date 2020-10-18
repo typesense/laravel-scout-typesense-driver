@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Devloops\LaravelTypesense\Typesense;
 use GuzzleHttp\Exception\GuzzleException;
+use Typesense\Exceptions\ObjectNotFound;
 use Typesense\Exceptions\TypesenseClientError;
 
 /**
@@ -57,10 +58,14 @@ class TypesenseSearchEngine extends Engine
           function (Model $model) {
               $collectionIndex = $this->typesense->getCollectionIndex($model);
 
-              $this->typesense->deleteDocument(
-                $collectionIndex,
-                $model->{$model->getKey()}
-              );
+              try {
+                  $this->typesense->deleteDocument(
+                    $collectionIndex,
+                    $model->{$model->getKey()}
+                  );
+              } catch (ObjectNotFound $e) {
+                  // Don't need to do anything here. The object wasn't found anyway, so nothing to delete!
+              }
           }
         );
     }
