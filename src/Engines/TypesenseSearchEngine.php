@@ -61,7 +61,7 @@ class TypesenseSearchEngine extends Engine
               try {
                   $this->typesense->deleteDocument(
                     $collectionIndex,
-                    $model->{$model->getKey()}
+                    $model->getScoutKey()
                   );
               } catch (ObjectNotFound $e) {
                   // Don't need to do anything here. The object wasn't found anyway, so nothing to delete!
