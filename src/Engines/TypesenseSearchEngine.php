@@ -2,13 +2,14 @@
 
 namespace Devloops\LaravelTypesense\Engines;
 
+use Exception;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Illuminate\Database\Eloquent\Model;
 use Devloops\LaravelTypesense\Typesense;
-use GuzzleHttp\Exception\GuzzleException;
-use Devloops\Typesence\Exceptions\TypesenseClientError;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class TypesenseSearchEngine
@@ -20,12 +21,12 @@ use Devloops\Typesence\Exceptions\TypesenseClientError;
 class TypesenseSearchEngine extends Engine
 {
 
-    private $typesense;
+    private Typesense $typesense;
 
     /**
      * TypesenseSearchEngine constructor.
      *
-     * @param $typesense
+     * @param  \Devloops\LaravelTypesense\Typesense  $typesense
      */
     public function __construct(Typesense $typesense)
     {
@@ -33,145 +34,147 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @inheritDoc
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     *
+     * @throws \Http\Client\Exception
+     * @throws \JsonException
+     * @throws \Typesense\Exceptions\TypesenseClientError
      */
     public function update($models): void
     {
-        $models->each(
-          function (Model $model) {
-              $array = $model->toSearchableArray();
+        $collection = $this->typesense->getCollectionIndex($models->first());
 
-              $collectionIndex = $this->typesense->getCollectionIndex($model);
+        if ($this->usesSoftDelete($models->first()) && $this->softDelete) {
+            $models->each->pushSoftDeleteMetadata();
+        }
 
-              $this->typesense->upsertDocument($collectionIndex, $array);
-          }
-        );
+        $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+                                                              ->toArray());
     }
 
     /**
-     * @inheritDoc
+     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     *
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\TypesenseClientError
      */
     public function delete($models): void
     {
-        $models->each(
-          function (Model $model) {
-              $collectionIndex = $this->typesense->getCollectionIndex($model);
+        $models->each(function (Model $model) {
+            $collectionIndex = $this->typesense->getCollectionIndex($model);
 
-              $this->typesense->deleteDocument(
-                $collectionIndex,
-                $model->{$model->getKey()}
-              );
-          }
-        );
+            $this->typesense->deleteDocument($collectionIndex, $model->{$model->getKey()});
+        });
     }
 
     /**
-     * @inheritDoc
-     */
-    public function search(Builder $builder)
-    {
-        return $this->performSearch(
-          $builder,
-          array_filter(
-            [
-              'q'        => $builder->query,
-              'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-              'fiter_by' => $this->filters($builder),
-              'per_page' => $builder->limit,
-              'page'     => 1,
-            ]
-          )
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function paginate(Builder $builder, $perPage, $page)
-    {
-        return $this->performSearch(
-          $builder,
-          [
-            'q'        => $builder->query,
-            'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'fiter_by' => $this->filters($builder),
-            'per_page' => $builder->limit,
-            'page'     => 1,
-          ]
-        );
-    }
-
-    /**
-     * @param   \Laravel\Scout\Builder  $builder
-     * @param   array                   $options
+     * @param  \Laravel\Scout\Builder  $builder
      *
-     * @return array|mixed
-     * @throws \Devloops\Typesence\Exceptions\TypesenseClientError
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return mixed
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\TypesenseClientError
      */
-    protected function performSearch(Builder $builder, array $options = [])
+    public function search(Builder $builder): mixed
     {
-        $documents =
-          $this->typesense->getCollectionIndex($builder->model)->getDocuments();
+        return $this->performSearch($builder, array_filter([
+          'q'         => $builder->query,
+          'query_by'  => implode(',', $builder->model->typesenseQueryBy()),
+          'filter_by' => $this->filters($builder),
+          'per_page'  => $builder->limit,
+          'page'      => 1,
+        ]));
+    }
+
+    /**
+     * @param  \Laravel\Scout\Builder  $builder
+     * @param  int  $perPage
+     * @param  int  $page
+     *
+     * @return mixed
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\TypesenseClientError
+     */
+    public function paginate(Builder $builder, $perPage, $page): mixed
+    {
+        return $this->performSearch($builder, array_filter([
+          'q'         => $builder->query,
+          'query_by'  => implode(',', $builder->model->typesenseQueryBy()),
+          'filter_by' => $this->filters($builder),
+          'per_page'  => $perPage,
+          'page'      => $page,
+        ]));
+    }
+
+    /**
+     * @param  \Laravel\Scout\Builder  $builder
+     * @param  array  $options
+     *
+     * @return mixed
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\TypesenseClientError
+     */
+    protected function performSearch(Builder $builder, array $options = []): mixed
+    {
+        $documents = $this->typesense->getCollectionIndex($builder->model)
+                                     ->getDocuments();
         if ($builder->callback) {
-            return call_user_func(
-              $builder->callback,
-              $documents,
-              $builder->query,
-              $options
-            );
+            return call_user_func($builder->callback, $documents, $builder->query, $options);
         }
-        return $documents->search(
-          $options
-        );
+        return $documents->search($options);
     }
 
     /**
-     * @param   \Laravel\Scout\Builder  $builder
+     * @param  \Laravel\Scout\Builder  $builder
      *
-     * @return array
+     * @return string
      */
-    protected function filters(Builder $builder): array
+    protected function filters(Builder $builder): string
     {
-        return collect($builder->wheres)->map(
-          static function ($value, $key) {
-              return $key . ':=' . $value;
-          }
-        )->values()->all();
+        return collect($builder->wheres)
+          ->map(static fn($value, $key) => $key.':='.$value)
+          ->values()
+          ->implode(' && ');
     }
 
     /**
-     * @inheritDoc
+     * @param  mixed  $results
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function mapIds($results): Collection
     {
-        return collect($results['hits'])->pluck('document.id')->values();
+        return collect($results['hits'])
+          ->pluck('document.id')
+          ->values();
     }
 
     /**
-     * @inheritDoc
+     * @param  \Laravel\Scout\Builder  $builder
+     * @param  mixed  $results
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function map(Builder $builder, $results, $model)
+    public function map(Builder $builder, $results, $model): \Illuminate\Database\Eloquent\Collection
     {
-        if ((int)($results['found'] ?? 0) === 0) {
+        if ((int) ($results['found'] ?? 0) === 0) {
             return $model->newCollection();
         }
 
-        $objectIds         =
-          collect($results['hits'])->pluck('document.id')->values()->all();
+        $objectIds = collect($results['hits'])
+          ->pluck('document.id')
+          ->values()
+          ->all();
+
         $objectIdPositions = array_flip($objectIds);
-        return $model->getScoutModelsByIds(
-          $builder,
-          $objectIds
-        )->filter(
-          static function ($model) use ($objectIds) {
-              return in_array($model->getScoutKey(), $objectIds, false);
-          }
-        )->sortBy(
-          static function ($model) use ($objectIdPositions) {
-              return $objectIdPositions[$model->getScoutKey()];
-          }
-        )->values();
+        return $model->getScoutModelsByIds($builder, $objectIds)
+                     ->filter(static function ($model) use ($objectIds) {
+                         return in_array($model->getScoutKey(), $objectIds, false);
+                     })
+                     ->sortBy(static function ($model) use ($objectIdPositions) {
+                         return $objectIdPositions[$model->getScoutKey()];
+                     })
+                     ->values();
     }
 
     /**
@@ -179,20 +182,85 @@ class TypesenseSearchEngine extends Engine
      */
     public function getTotalCount($results): int
     {
-        return (int)($results['found'] ?? 0);
+        return (int) ($results['found'] ?? 0);
     }
 
     /**
-     * @inheritDoc
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\TypesenseClientError
      */
     public function flush($model): void
     {
         $collection = $this->typesense->getCollectionIndex($model);
-        try {
-            $collection->delete();
-        } catch (TypesenseClientError $e) {
-        } catch (GuzzleException $e) {
+        $collection->delete();
+    }
+
+    /**
+     * @param $model
+     *
+     * @return bool
+     */
+    protected function usesSoftDelete($model): bool
+    {
+        return in_array(SoftDeletes::class, class_uses_recursive($model), true);
+    }
+
+    /**
+     * @param  \Laravel\Scout\Builder  $builder
+     * @param  mixed  $results
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
+     * @return \Illuminate\Support\LazyCollection
+     */
+    public function lazyMap(Builder $builder, $results, $model): LazyCollection
+    {
+        if ((int) ($results['found'] ?? 0) === 0) {
+            return LazyCollection::make($model->newCollection());
         }
+
+        $objectIds = collect($results['hits'])
+          ->pluck('document.id')
+          ->values()
+          ->all();
+
+        $objectIdPositions = array_flip($objectIds);
+
+        return $model->queryScoutModelsByIds($builder, $objectIds)
+                     ->cursor()
+                     ->filter(static function ($model) use ($objectIds) {
+                         return in_array($model->getScoutKey(), $objectIds, false);
+                     })
+                     ->sortBy(static function ($model) use ($objectIdPositions) {
+                         return $objectIdPositions[$model->getScoutKey()];
+                     })
+                     ->values();
+    }
+
+    /**
+     * @param  string  $name
+     * @param  array  $options
+     *
+     * @return void
+     * @throws \Exception
+     */
+    public function createIndex($name, array $options = []): void
+    {
+        throw new Exception('Typesense indexes are created automatically upon adding objects.');
+    }
+
+    /**
+     * @param  string  $name
+     *
+     * @return array
+     * @throws \Http\Client\Exception
+     * @throws \Typesense\Exceptions\ObjectNotFound
+     * @throws \Typesense\Exceptions\TypesenseClientError
+     */
+    public function deleteIndex($name): array
+    {
+        return $this->typesense->deleteCollection($name);
     }
 
 }

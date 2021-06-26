@@ -34,18 +34,18 @@
     }
   },
   "require": {
-    "php": "~7.2",
-    "laravel/scout": "7.*|^8.0",
-    "illuminate/bus": "~5.4|^6.0|^7.0",
-    "illuminate/contracts": "~5.4|^6.0|^7.0",
-    "illuminate/database": "~5.4|^6.0|^7.0",
-    "illuminate/pagination": "~5.4|^6.0|^7.0",
-    "illuminate/queue": "~5.4|^6.0|^7.0",
-    "illuminate/support": "~5.4|^6.0|^7.0",
-    "devloopsnet/typesens-php": "^3.0"
+    "php": "^8.0",
+    "laravel/scout": "^8.0|^9.0",
+    "illuminate/bus": "^7.0|^8.0",
+    "illuminate/contracts": "^7.0|^8.0",
+    "illuminate/database": "^7.0|^8.0",
+    "illuminate/pagination": "^7.0|^8.0",
+    "illuminate/queue": "^7.0|^8.0",
+    "illuminate/support": "^7.0|^8.0",
+    "typesense/typesense-php": "^4.0"
   },
   "suggest": {
-    "devloopsnet/typesens-php": "Required to use the Typesense php client."
+    "typesense/typesense-php": "Required to use the Typesense php client."
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0|^9.0",

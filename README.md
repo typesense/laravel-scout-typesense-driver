@@ -1,7 +1,16 @@
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/devloopsnet/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/devloopsnet/laravel-typesense) ![Postcardware](https://img.shields.io/badge/Postcardware-%F0%9F%92%8C-197593?style=for-the-badge) 
+
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/devloopsnet/laravel-typesense?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/devloopsnet/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense)
+
+
 # Laravel Scout Typesense Engine
 Typesense engine for laravel/scout https://github.com/typesense/typesense .
 
-This package makes it easy to add full text search support to your models with Laravel 5.3 to 7.0.
+<p align="center">
+    <img src="https://banners.beyondco.de/Typesense%20Driver%20for%20Laravel-Scout.png?theme=dark&packageName=devloopsnet%2Flaravel-typesense&pattern=anchorsAway&style=style_1&description=A+Typesense+%28search+engine%29+driver+for+laravel-scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" alt="laravel-scout-typesense-engine
+ socialcard">
+</p>
+This package makes it easy to add full text search support to your models with Laravel 7.* to 8.*.
 
 ## Contents
 
@@ -52,22 +61,25 @@ In your `config/scout.php` add:
 ```php
 
 'typesensesearch' => [
-    'master_node' => [
-      'host' => 'HOST',
-      'port' => '8108',
-      'protocol' => 'http',
-      'api_key' => 'API_KEY',
-    ],
-    'enabled_read_replica' => FALSE,
-    'read_replica_nodes' => [
+    'api_key'         => 'abcd',
+    'nodes'           => [
       [
-        'host' => 'HOST',
-        'port' => '8108',
+        'host'     => 'localhost',
+        'port'     => '8108',
+        'path'     => '',
         'protocol' => 'http',
-        'api_key' => 'API_KEY',
       ],
     ],
-    'timeout' => 2,
+    'nearest_node'    => [
+        'host'     => 'localhost',
+        'port'     => '8108',
+        'path'     => '',
+        'protocol' => 'http',
+    ],
+    'connection_timeout_seconds'   => 2,
+    'healthcheck_interval_seconds' => 30,    
+    'num_retries'                  => 3,
+    'retry_interval_seconds'       => 1,
   ],
 ```
 
@@ -106,7 +118,7 @@ class Post extends Model implements TypesenseSearch
 
     public function getCollectionSchema(): array {
       return [
-        'name' => $this->getTable(),
+        'name' => $this->searchableAs(),
         'fields' => [
           [
             'name' => 'title',
