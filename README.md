@@ -25,7 +25,7 @@ This package makes it easy to add full text search support to your models with L
 You can install the package via composer:
 
 ``` bash
-composer require Typesensenet/laravel-typesense
+composer require typesense/laravel-typesense
 ```
 
 Add the service provider:
