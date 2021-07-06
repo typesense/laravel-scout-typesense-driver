@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\LaravelTypesense;
+namespace Typesense\LaravelTypesense;
 
 use Typesense\Client;
 use Typesense\Document;

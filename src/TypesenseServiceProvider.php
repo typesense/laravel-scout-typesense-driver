@@ -1,17 +1,17 @@
 <?php
 
-namespace Devloops\LaravelTypesense;
+namespace Typesense\LaravelTypesense;
 
 use Typesense\Client;
 use Laravel\Scout\EngineManager;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Builder;
-use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;
+use Typesense\LaravelTypesense\Engines\TypesenseSearchEngine;
 
 /**
  * Class TypesenseServiceProvider
  *
- * @package Devloops\LaravelTypesense
+ * @package Typesense\LaravelTypesense
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */

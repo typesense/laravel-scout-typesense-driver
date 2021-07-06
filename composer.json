@@ -1,5 +1,5 @@
 {
-  "name": "devloopsnet/laravel-typesense",
+  "name": "typesense/laravel-typesense",
   "description": "Typesense laravel/scout engine",
   "keywords": [
     "laravel",
@@ -20,16 +20,16 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "Devloops\\LaravelTypesense\\": "src/"
+      "Typesense\\LaravelTypesense\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Devloops\\LaravelTypesense\\TypesenseServiceProvider"
+        "Typesense\\LaravelTypesense\\TypesenseServiceProvider"
       ],
       "aliases": {
-        "Typesense": "Devloops\\LaravelTypesense\\TypesenseFacade"
+        "Typesense": "Typesense\\LaravelTypesense\\TypesenseFacade"
       }
     }
   },
