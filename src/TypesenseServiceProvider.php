@@ -53,7 +53,6 @@ class TypesenseServiceProvider extends ServiceProvider
             return new TypesenseEngine(new Typesense($app->make(Client::class)));
         });
 
-        // TODO test this manually to make sure it still works
         Builder::macro('count', function () {
             return $this->engine()
                 ->getTotalCount(
