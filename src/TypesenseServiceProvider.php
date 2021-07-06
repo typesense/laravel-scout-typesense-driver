@@ -6,7 +6,7 @@ use Typesense\Client;
 use Laravel\Scout\EngineManager;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Builder;
-use Typesense\LaravelTypesense\Engines\TypesenseSearchEngine;
+use Typesense\LaravelTypesense\Engines\TypesenseEngine;
 
 /**
  * Class TypesenseServiceProvider
@@ -20,13 +20,13 @@ class TypesenseServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app[EngineManager::class]->extend('typesensesearch', static function ($app) {
+        $this->app[EngineManager::class]->extend('typesense', static function ($app) {
             $client = new Client([
-              'master_node'        => config('scout.typesensesearch.master_node', []),
-              'read_replica_nodes' => !config('scout.typesensesearch.enabled_read_replica', false) ? [] : config('scout.typesensesearch.read_replicas', []),
-              'timeout_seconds'    => config('scout.typesensesearch.timeout', 2.0),
+              'master_node'        => config('scout.typesense.master_node', []),
+              'read_replica_nodes' => !config('scout.typesense.enabled_read_replica', false) ? [] : config('scout.typesense.read_replicas', []),
+              'timeout_seconds'    => config('scout.typesense.timeout', 2.0),
             ]);
-            return new TypesenseSearchEngine(new Typesense($client));
+            return new TypesenseEngine(new Typesense($client));
         });
 
         Builder::macro('count', function () {
@@ -40,9 +40,9 @@ class TypesenseServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Typesense::class, static function () {
             $client = new Client([
-              'master_node'        => config('scout.typesensesearch.master_node', []),
-              'read_replica_nodes' => !config('scout.typesensesearch.enabled_read_replica', false) ? [] : config('scout.typesensesearch.read_replicas', []),
-              'timeout_seconds'    => config('scout.typesensesearch.timeout', 2.0),
+              'master_node'        => config('scout.typesense.master_node', []),
+              'read_replica_nodes' => !config('scout.typesense.enabled_read_replica', false) ? [] : config('scout.typesense.read_replicas', []),
+              'timeout_seconds'    => config('scout.typesense.timeout', 2.0),
             ]);
 
             return new Typesense($client);

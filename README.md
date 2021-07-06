@@ -48,7 +48,7 @@ Ensure you have Laravel Scout as a provider too otherwise you will get an "unres
 ],
 ```
 
-Add  `SCOUT_DRIVER=typesensesearch` to your `.env` file
+Add  `SCOUT_DRIVER=typesense` to your `.env` file
 
 Then you should publish `scout.php` configuration file to your config directory
 
@@ -60,7 +60,7 @@ In your `config/scout.php` add:
 
 ```php
 
-'typesensesearch' => [
+'typesense' => [
     'api_key'         => 'abcd',
     'nodes'           => [
       [

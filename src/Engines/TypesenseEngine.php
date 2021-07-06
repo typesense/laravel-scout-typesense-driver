@@ -12,19 +12,19 @@ use Typesense\LaravelTypesense\Typesense;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class TypesenseSearchEngine
+ * Class TypesenseEngine
  *
  * @package Devloops\LaravelTypesense\Engines
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
-class TypesenseSearchEngine extends Engine
+class TypesenseEngine extends Engine
 {
 
     private Typesense $typesense;
 
     /**
-     * TypesenseSearchEngine constructor.
+     * typesenseEngine constructor.
      *
      * @param  \Typesense\LaravelTypesense\Typesense  $typesense
      */
