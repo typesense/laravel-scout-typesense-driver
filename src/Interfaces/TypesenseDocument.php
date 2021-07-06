@@ -7,7 +7,7 @@ namespace Typesense\LaravelTypesense\Interfaces;
  *
  * @package Typesense\LaravelTypesense\Interfaces
  */
-interface TypesenseSearch
+interface TypesenseDocument
 {
 
     public function typesenseQueryBy(): array;

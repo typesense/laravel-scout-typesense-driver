@@ -95,10 +95,10 @@ define the fields you want to make searchable by defining the `toSearchableArray
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Typesense\LaravelTypesense\Interfaces\TypesenseSearch;
+use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
 use Laravel\Scout\Searchable;
 
-class Post extends Model implements TypesenseSearch
+class Post extends Model implements TypesenseDocument
 {
     use Searchable;
 
