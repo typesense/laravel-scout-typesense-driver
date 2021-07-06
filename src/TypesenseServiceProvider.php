@@ -56,8 +56,9 @@ class TypesenseServiceProvider extends ServiceProvider
         // TODO test this manually to make sure it still works
         Builder::macro('count', function () {
             return $this->engine()
-                ->getTotalCount($this->engine()
-                    ->search($this));
+                ->getTotalCount(
+                    $this->engine()->search($this)
+                );
         });
     }
 }
