@@ -168,7 +168,7 @@ The `searchable()` method will chunk the results of the query and add the record
 
 ## Migrating from devloopsnet/laravel-typesense
 - Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-typesense`
-- Scout driver is now called `typesense`, instead of `typesensesearch`. This should be reflected by setting the SCOUT_DRIVER env var to `typesense`
+- The Scout driver is now called `typesense`, instead of `typesensesearch`. This should be reflected by setting the SCOUT_DRIVER env var to `typesense`
 - Instead of importing `Devloops\LaravelTypesense\*` you should import `Typesense\LaravelTypesense\*`
 - Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch` they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
 
