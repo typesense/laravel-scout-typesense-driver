@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class TypesenseEngine
  *
- * @package Devloops\LaravelTypesense\Engines
+ * @package Typesense\LaravelTypesense\Engines
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
