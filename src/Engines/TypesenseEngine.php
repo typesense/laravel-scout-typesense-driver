@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\LaravelTypesense\Engines;
+namespace Typesense\LaravelTypesense\Engines;
 
 use Exception;
 use Laravel\Scout\Builder;
@@ -8,25 +8,25 @@ use Laravel\Scout\Engines\Engine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Database\Eloquent\Model;
-use Devloops\LaravelTypesense\Typesense;
+use Typesense\LaravelTypesense\Typesense;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class TypesenseSearchEngine
+ * Class TypesenseEngine
  *
- * @package Devloops\LaravelTypesense\Engines
+ * @package Typesense\LaravelTypesense\Engines
  * @date    4/5/20
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
-class TypesenseSearchEngine extends Engine
+class TypesenseEngine extends Engine
 {
 
     private Typesense $typesense;
 
     /**
-     * TypesenseSearchEngine constructor.
+     * typesenseEngine constructor.
      *
-     * @param  \Devloops\LaravelTypesense\Typesense  $typesense
+     * @param  \Typesense\LaravelTypesense\Typesense  $typesense
      */
     public function __construct(Typesense $typesense)
     {

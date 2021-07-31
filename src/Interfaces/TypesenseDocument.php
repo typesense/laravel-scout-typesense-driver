@@ -1,13 +1,13 @@
 <?php
 
-namespace Devloops\LaravelTypesense\Interfaces;
+namespace Typesense\LaravelTypesense\Interfaces;
 
 /**
  * Interface TypesenseSearch
  *
- * @package Devloops\LaravelTypesense\Interfaces
+ * @package Typesense\LaravelTypesense\Interfaces
  */
-interface TypesenseSearch
+interface TypesenseDocument
 {
 
     public function typesenseQueryBy(): array;

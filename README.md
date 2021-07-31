@@ -16,6 +16,7 @@ This package makes it easy to add full text search support to your models with L
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Migrating from devloopsnet/laravel-typesense](#migrating-from-devloopsnetlaravel-typesense)
 - [Author](#author)
 - [License](#license)
 
@@ -25,7 +26,7 @@ This package makes it easy to add full text search support to your models with L
 You can install the package via composer:
 
 ``` bash
-composer require devloopsnet/laravel-typesense
+composer require typesense/laravel-typesense
 ```
 
 Add the service provider:
@@ -34,7 +35,7 @@ Add the service provider:
 // config/app.php
 'providers' => [
     // ...
-    Devloops\LaravelTypesense\TypesenseServiceProvider::class,
+    Typesense\LaravelTypesense\TypesenseServiceProvider::class,
 ],
 ```
 
@@ -48,7 +49,7 @@ Ensure you have Laravel Scout as a provider too otherwise you will get an "unres
 ],
 ```
 
-Add  `SCOUT_DRIVER=typesensesearch` to your `.env` file
+Add  `SCOUT_DRIVER=typesense` to your `.env` file
 
 Then you should publish `scout.php` configuration file to your config directory
 
@@ -60,7 +61,7 @@ In your `config/scout.php` add:
 
 ```php
 
-'typesensesearch' => [
+'typesense' => [
     'api_key'         => 'abcd',
     'nodes'           => [
       [
@@ -95,10 +96,10 @@ define the fields you want to make searchable by defining the `toSearchableArray
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Devloops\LaravelTypesense\Interfaces\TypesenseSearch;
+use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
 use Laravel\Scout\Searchable;
 
-class Post extends Model implements TypesenseSearch
+class Post extends Model implements TypesenseDocument
 {
     use Searchable;
 
@@ -164,6 +165,13 @@ The `searchable()` method will chunk the results of the query and add the record
 
 // You may also add records via collections...
 `$posts->searchable();`
+
+## Migrating from devloopsnet/laravel-typesense
+- Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-typesense`
+- The Scout driver is now called `typesense`, instead of `typesensesearch`. This should be reflected by setting the SCOUT_DRIVER env var to `typesense`,
+  and changing the config/scout.php config key from `typesensesearch` to `typesense`
+- Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
+- Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch`, they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
 
 ## Author
 
