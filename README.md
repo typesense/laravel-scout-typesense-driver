@@ -1,23 +1,21 @@
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/devloopsnet/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/devloopsnet/laravel-typesense) ![Postcardware](https://img.shields.io/badge/Postcardware-%F0%9F%92%8C-197593?style=for-the-badge) 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/typesense/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/typesense/laravel-typesense) ![Postcardware](https://img.shields.io/badge/Postcardware-%F0%9F%92%8C-197593?style=for-the-badge) 
 
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/devloopsnet/laravel-typesense?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/devloopsnet/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/typesense/laravel-typesense?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/typesense/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense)
 
 
 # Laravel Scout Typesense Engine
-Typesense engine for laravel/scout https://github.com/typesense/typesense .
-
 <p align="center">
-    <img src="https://banners.beyondco.de/Typesense%20Driver%20for%20Laravel-Scout.png?theme=dark&packageName=devloopsnet%2Flaravel-typesense&pattern=anchorsAway&style=style_1&description=A+Typesense+%28search+engine%29+driver+for+laravel-scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" alt="laravel-scout-typesense-engine
- socialcard">
+    <img src="https://banners.beyondco.de/typesense%2Flaravel-typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-typesense&pattern=architect&style=style_1&description=Easy+typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
 </p>
-This package makes it easy to add full text search support to your models with Laravel 7.* to 8.*.
+
+This package makes it easy to add full text search support to your models with Laravel 7.\* to 8.\*. 
 
 ## Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Migrating from devloopsnet/laravel-typesense](#migrating-from-devloopsnetlaravel-typesense)
-- [Author](#author)
+- [Authors](#authors)
 - [License](#license)
 
 
@@ -152,19 +150,15 @@ After that you can search your models with:
 `Post::search('Bugs Bunny')->get();`
 
 ## Adding via Query
-The `searchable()` method will chunk the results of the query and add the records to your search index. 
+The `searchable()` method will chunk the results of the query and add the records to your search index. Examples:
 
-`$post = Post::find(1);`
+```php
+$post = Post::find(1);
+$post->searchable();
 
-// You may also add record via collection...
-`$post->searchable();`
-
-// OR
-
-`$posts = Post::where('year', '>', '2018')->get();`
-
-// You may also add records via collections...
-`$posts->searchable();`
+$posts = Post::where('year', '>', '2018')->get();
+$posts->searchable();
+```
 
 ## Migrating from devloopsnet/laravel-typesense
 - Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-typesense`
@@ -173,10 +167,11 @@ The `searchable()` method will chunk the results of the query and add the record
 - Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
 - Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch`, they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
 
-## Author
+## Authors
+This package was based off of https://github.com/AbdullahFaqeir and his company DevLoops' work, https://github.com/devloopsnet/laravel-scout-typesense-engine. Other contributors include:
 
-- [Abdullah Al-Faqeir](https://github.com/abdullahfaqeir)
+- [hi019](https://github.com/hi019)
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
