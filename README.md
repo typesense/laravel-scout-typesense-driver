@@ -1,4 +1,4 @@
-**Note: This library is in the process of being adopted into Typesense. See [here](https://github.com/typesense/laravel-scout-typesense-engine/issues/1) for updates.**
+**Note: This library is in the process of being adopted into the Typesense Github org. Follow [this issue](https://github.com/typesense/laravel-scout-typesense-engine/issues/1) for updates. In the meantime, please continue to use [the original library](https://github.com/devloopsnet/laravel-scout-typesense-engine) instead.**
 
 ---
 
