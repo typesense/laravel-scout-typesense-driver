@@ -1,7 +1,14 @@
+**Note: This library is in the process of being adopted into Typesense. See [here](https://github.com/typesense/laravel-scout-typesense-engine/issues/1) for updates.**
+
+---
+
+<!--
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/typesense/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/typesense/laravel-typesense)
 
 [![PHP from Packagist](https://img.shields.io/packagist/php-v/typesense/laravel-typesense?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/typesense/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense)
 
+-->
 
 # Laravel Scout Typesense Engine
 <p align="center">
