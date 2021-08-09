@@ -173,6 +173,7 @@ $posts->searchable();
   and changing the config/scout.php config key from `typesensesearch` to `typesense`
 - Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
 - Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch`, they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
+- In the rare case where the `TypesenseEngine` method `delete` is called directly, all the models passed to the method must now belong to the same Typesense index
 
 ## Authors
 This package was based off of https://github.com/AbdullahFaqeir and his company DevLoops' work, https://github.com/devloopsnet/laravel-scout-typesense-engine. Other contributors include:
