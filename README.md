@@ -2,20 +2,13 @@
 
 ---
 
-<!--
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/typesense/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/typesense/laravel-typesense)
-
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/typesense/laravel-typesense?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/typesense/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/typesense/laravel-typesense)
-
--->
-
-# Laravel Scout Typesense Engine
 <p align="center">
-    <img src="https://banners.beyondco.de/typesense%2Flaravel-typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-typesense&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
+    <img src="https://banners.beyondco.de/Laravel%20Scout%20Driver%20For%20Typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-scout-typesense-driver&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=75px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
 </p>
 
 This package makes it easy to add full text search support to your models with Laravel 7.\* to 8.\*. 
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/typesense/laravel-scout-typesense-driver.svg?style=flat-square)](https://packagist.org/packages/typesense/laravel-scout-typesense-driver) [![PHP from Packagist](https://img.shields.io/packagist/php-v/typesense/laravel-scout-typesense-driver?style=flat-square)](https://packagist.org/packages/typesense/laravel-scout-typesense-driver)
 
 ## Contents
 
@@ -31,7 +24,7 @@ This package makes it easy to add full text search support to your models with L
 You can install the package via composer:
 
 ``` bash
-composer require typesense/laravel-typesense
+composer require typesense/laravel-scout-typesense-driver
 ```
 
 Add the service provider:
@@ -168,7 +161,7 @@ $posts->searchable();
 ```
 
 ## Migrating from devloopsnet/laravel-typesense
-- Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-typesense`
+- Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-scout-typesense-driver`
 - The Scout driver is now called `typesense`, instead of `typesensesearch`. This should be reflected by setting the SCOUT_DRIVER env var to `typesense`,
   and changing the config/scout.php config key from `typesensesearch` to `typesense`
 - Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
@@ -176,7 +169,9 @@ $posts->searchable();
 - In the rare case where the `TypesenseEngine` method `delete` is called directly, all the model instances passed to the method must now belong to the same Typesense index
 
 ## Authors
-This package was based off of https://github.com/AbdullahFaqeir and his company DevLoops' work, https://github.com/devloopsnet/laravel-scout-typesense-engine. Other contributors include:
+This package was originally authored by [Abdullah Al-Faqeir](https://github.com/AbdullahFaqeir) and his company DevLoops: https://github.com/devloopsnet/laravel-scout-typesense-engine. It has since been adopted into the Typesense Github org. 
+
+Other key contributors include:
 
 - [hi019](https://github.com/hi019)
 
