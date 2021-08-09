@@ -1,19 +1,24 @@
 {
-  "name": "typesense/laravel-typesense",
-  "description": "Typesense laravel/scout engine",
+  "name": "typesense/laravel-scout-typesense-driver",
+  "description": "Laravel Scout Driver for Typesense",
   "keywords": [
     "laravel",
     "typesense",
     "search"
   ],
   "type": "library",
-  "homepage": "https://www.devloops.net",
+  "homepage": "https://typesense.org",
   "license": "MIT",
   "authors": [
     {
       "name": "Abdullah Al-Faqeir",
       "email": "abdullah@devloops.net",
       "homepage": "https://www.devloops.net",
+      "role": "Developer"
+    },
+    {
+      "name": "hi019",
+      "homepage": "https://github.com/hi019",
       "role": "Developer"
     }
   ],
