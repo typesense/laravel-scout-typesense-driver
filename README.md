@@ -12,7 +12,7 @@
 
 # Laravel Scout Typesense Engine
 <p align="center">
-    <img src="https://banners.beyondco.de/typesense%2Flaravel-typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-typesense&pattern=architect&style=style_1&description=Easy+typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
+    <img src="https://banners.beyondco.de/typesense%2Flaravel-typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-typesense&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
 </p>
 
 This package makes it easy to add full text search support to your models with Laravel 7.\* to 8.\*. 
@@ -173,6 +173,7 @@ $posts->searchable();
   and changing the config/scout.php config key from `typesensesearch` to `typesense`
 - Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
 - Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch`, they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
+- In the rare case where the `TypesenseEngine` method `delete` is called directly, all the model instances passed to the method must now belong to the same Typesense index
 
 ## Authors
 This package was based off of https://github.com/AbdullahFaqeir and his company DevLoops' work, https://github.com/devloopsnet/laravel-scout-typesense-engine. Other contributors include:
