@@ -60,15 +60,11 @@ class TypesenseEngine extends Engine
      */
     public function delete($models): void
     {
-        $collection = $this->typesense->getCollectionIndex($models->first());
-
-        $ids = $models->map->getScoutKey()->values()->all();
-        $ids = join(', ', $ids);
-
-        $query = [
-            'filter_by' => "{$models->first()->getScoutKeyName()}: [${ids}]",
-        ];
-        $this->typesense->deleteDocuments($collection, $query);
+        foreach ($models as $model) {
+            $collection = $this->typesense->getCollectionIndex($model);
+            
+            $this->typesense->deleteDocument($collection, $model->getScoutKey());
+        }
     }
 
     /**
