@@ -39,8 +39,8 @@ class TypesenseServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             Typesense::class,
-            function (Client $client) {
-                return new Typesense($client);
+            function ($app) {
+                return new Typesense($app->make(Client::class));
             }
         );
 
