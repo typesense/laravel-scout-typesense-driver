@@ -86,6 +86,8 @@ In your `config/scout.php` add:
 
 ## Usage
 
+If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/8.x/scout) first.
+
 After you have installed scout and the Typesense driver, you need to add the
 `Searchable` trait to your models that you want to make searchable. Additionaly,
 define the fields you want to make searchable by defining the `toSearchableArray` method on the model and implement `TypesenseSearch`:
@@ -99,67 +101,84 @@ use Illuminate\Database\Eloquent\Model;
 use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
 use Laravel\Scout\Searchable;
 
-class Post extends Model implements TypesenseDocument
+class Todo extends Model implements TypesenseDocument
 {
     use Searchable;
-
-    /**
+    
+     /**
      * Get the indexable data array for the model.
      *
      * @return array
      */
     public function toSearchableArray()
     {
-        $array = $this->toArray();
-
-        // Customize array...
-
-        return $array;
+        return array_merge(
+            $this->toArray(), 
+            [
+                // Cast id to string and turn created_at into an int32 timestamp
+                // in order to maintain compatibility with the Typesense index definition below
+                'id' => (string) $this->id,
+                'created_at' => $this->created_at->timestamp,
+            ]
+        );
     }
 
+     /**
+     * The Typesense schema to be created.
+     *
+     * @return array
+     */
     public function getCollectionSchema(): array {
-      return [
-        'name' => $this->searchableAs(),
-        'fields' => [
-          [
-            'name' => 'title',
-            'type' => 'string',
-          ],
-          [
-            'name' => 'created_at',
-            'type' => 'int32',
-          ],
-        ],
-        'default_sorting_field' => 'created_at',
-      ];
+        return [
+            'name' => $this->searchableAs(),
+            'fields' => [
+                [
+                    'name' => 'id',
+                    'type' => 'string',
+                ],
+                [
+                    'name' => 'name',
+                    'type' => 'string',
+                ],
+                [
+                    'name' => 'created_at',
+                    'type' => 'int64',
+                ],
+            ],
+            'default_sorting_field' => 'created_at',
+        ];
     }
 
+     /**
+     * The fields to be queried against. See https://typesense.org/docs/0.21.0/api/documents.html#search.
+     *
+     * @return array
+     */
     public function typesenseQueryBy(): array {
-      return [
-        'name',
-      ];
-    }
-    
+        return [
+            'name',
+        ];
+    }    
 }
 ```
 
 Then, sync the data with the search service like:
 
-`php artisan scout:import App\\Post`
+`php artisan scout:import App\\Models\\Todo`
 
 After that you can search your models with:
 
-`Post::search('Bugs Bunny')->get();`
+`Todo::search('Test')->get();`
 
 ## Adding via Query
 The `searchable()` method will chunk the results of the query and add the records to your search index. Examples:
 
 ```php
-$post = Post::find(1);
-$post->searchable();
+$todo = Todo::find(1);
+$todo->searchable();
 
-$posts = Post::where('year', '>', '2018')->get();
-$posts->searchable();
+$todos = Todo::where('created_at', '<', now())->get();
+$todos->searchable();
 ```
 
 ## Migrating from devloopsnet/laravel-typesense
@@ -176,6 +195,7 @@ This package was originally authored by [Abdullah Al-Faqeir](https://github.com/
 Other key contributors include:
 
 - [hi019](https://github.com/hi019)
+- [Philip Manavopoulos](https://github.com/manavo)
 
 ## License
 
