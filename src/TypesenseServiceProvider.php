@@ -21,11 +21,7 @@ class TypesenseServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app[EngineManager::class]->extend('typesensesearch', static function ($app) {
-            $client = new Client([
-              'master_node'        => config('scout.typesensesearch.master_node', []),
-              'read_replica_nodes' => !config('scout.typesensesearch.enabled_read_replica', false) ? [] : config('scout.typesensesearch.read_replicas', []),
-              'timeout_seconds'    => config('scout.typesensesearch.timeout', 2.0),
-            ]);
+            $client = new Client(config('scout.typesensesearch'));
             return new TypesenseSearchEngine(new Typesense($client));
         });
 
@@ -39,12 +35,7 @@ class TypesenseServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Typesense::class, static function () {
-            $client = new Client([
-              'master_node'        => config('scout.typesensesearch.master_node', []),
-              'read_replica_nodes' => !config('scout.typesensesearch.enabled_read_replica', false) ? [] : config('scout.typesensesearch.read_replicas', []),
-              'timeout_seconds'    => config('scout.typesensesearch.timeout', 2.0),
-            ]);
-
+            $client = new Client(config('scout.typesensesearch'));
             return new Typesense($client);
         });
 
