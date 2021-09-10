@@ -20,22 +20,20 @@ class TypesenseServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->app[EngineManager::class]->extend('typesensesearch', static function ($app) {
-            $client = new Client(config('scout.typesensesearch'));
+        $this->app[EngineManager::class]->extend('typesense', static function ($app) {
+            $client = new Client(config('scout.typesense'));
             return new TypesenseSearchEngine(new Typesense($client));
         });
 
         Builder::macro('count', function () {
-            return $this->engine()
-                        ->getTotalCount($this->engine()
-                                             ->search($this));
+            return $this->engine()->getTotalCount($this->engine()->search($this));
         });
     }
 
     public function register(): void
     {
         $this->app->singleton(Typesense::class, static function () {
-            $client = new Client(config('scout.typesensesearch'));
+            $client = new Client(config('scout.typesense'));
             return new Typesense($client);
         });
 
