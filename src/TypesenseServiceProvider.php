@@ -47,9 +47,9 @@ class TypesenseServiceProvider extends ServiceProvider
                                              ->search($this));
         });
 
-        Builder::macro('orderByLocation', function (string $column, float $lat, float $lng, string $radius, bool $excludeRadius) {
+        Builder::macro('orderByLocation', function (string $column, float $lat, float $lng, string $direction = 'asc') {
             $this->engine()
-                 ->orderByLocation($column, $lat, $lng, $radius, $excludeRadius);
+                 ->orderByLocation($column, $lat, $lng, $direction);
             return $this;
         });
 

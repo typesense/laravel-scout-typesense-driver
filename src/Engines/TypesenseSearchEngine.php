@@ -178,23 +178,16 @@ class TypesenseSearchEngine extends Engine
      * @param  string  $column
      * @param  float  $lat
      * @param  float  $lng
-     * @param  string  $radius
      * @param  string  $direction
-     * @param  bool  $exclude_radius
      *
      * @return string
      * @noinspection PhpPureAttributeCanBeAddedInspection
      */
-    private function parseOrderByLocation(string $column, float $lat, float $lng, string $radius, string $direction = 'asc', bool $exclude_radius = false): string
+    private function parseOrderByLocation(string $column, float $lat, float $lng, string $direction = 'asc'): string
     {
         $direction = Str::lower($direction) === 'asc' ? 'asc' : 'desc';
-        $str       = $column.'('.$lat.', '.$lng.', ';
-        if ($exclude_radius) {
-            $str .= 'exclude_radius: '.$radius;
-        } else {
-            $str .= $radius;
-        }
-        return $str.'):'.$direction;
+        $str       = $column.'('.$lat.', '.$lng.')';
+        return $str.':'.$direction;
     }
 
     /**
@@ -446,14 +439,23 @@ class TypesenseSearchEngine extends Engine
         return $this;
     }
 
-    public function orderByLocation(string $column, float $lat, float $lng, string $radius, bool $excludeRadius): static
+    /**
+     * Add location to order by clause
+     *
+     * @param  string  $column
+     * @param  float  $lat
+     * @param  float  $lng
+     * @param  string  $direction
+     *
+     * @return $this
+     */
+    public function orderByLocation(string $column, float $lat, float $lng, string $direction): static
     {
         $this->locationOrderBy = [
-          'column'         => $column,
-          'lat'            => $lat,
-          'lng'            => $lng,
-          'radius'         => $radius,
-          'exclude_radius' => $excludeRadius,
+          'column'    => $column,
+          'lat'       => $lat,
+          'lng'       => $lng,
+          'direction' => $direction,
         ];
         return $this;
     }

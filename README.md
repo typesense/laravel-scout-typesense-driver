@@ -207,12 +207,9 @@ $search->orderBy('name','desc')
 - Location Order
 
 ```php
-$search->orderByLocation('location',48.853, 2.344, '1km')
+$search->orderByLocation('location',48.853, 2.344, 'desc')
 //or
-$search->orderByLocation('location',48.853, 2.344, '1mi')
-
-//to allow ordering with other columns
-$search->orderByLocation('location',48.853, 2.344, '1mi','asc',true)
+$search->orderByLocation('location',48.853, 2.344, 'asc')
 ```
 
 - Group by limit
