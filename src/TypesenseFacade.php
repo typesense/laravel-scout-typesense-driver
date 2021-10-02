@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Facade;
 class TypesenseFacade extends Facade
 {
 
+    /**
+     * @return string
+     */
     public static function getFacadeAccessor(): string
     {
         return 'typesense';

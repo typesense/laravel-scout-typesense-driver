@@ -4,6 +4,7 @@ namespace Devloops\LaravelTypesense\Engines;
 
 use Exception;
 use Laravel\Scout\Builder;
+use Illuminate\Support\Str;
 use Laravel\Scout\Engines\Engine;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -21,7 +22,40 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TypesenseSearchEngine extends Engine
 {
 
+    /**
+     * @var \Devloops\LaravelTypesense\Typesense
+     */
     private Typesense $typesense;
+
+    /**
+     * @var array
+     */
+    private array $groupBy = [];
+
+    /**
+     * @var int
+     */
+    private int $groupByLimit = 3;
+
+    /**
+     * @var string
+     */
+    private string $startTag = '<mark>';
+
+    /**
+     * @var string
+     */
+    private string $endTag = '</mark>';
+
+    /**
+     * @var int
+     */
+    private int $limitHits = -1;
+
+    /**
+     * @var array
+     */
+    private array $locationOrderBy = [];
 
     /**
      * TypesenseSearchEngine constructor.
@@ -34,11 +68,12 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @param  \Illuminate\Database\Eloquent\Collection<int, Model>|Model[]  $models
      *
      * @throws \Http\Client\Exception
      * @throws \JsonException
      * @throws \Typesense\Exceptions\TypesenseClientError
+     * @noinspection NotOptimalIfConditionsInspection
      */
     public function update($models): void
     {
@@ -76,13 +111,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function search(Builder $builder): mixed
     {
-        return $this->performSearch($builder, array_filter([
-          'q'         => $builder->query,
-          'query_by'  => implode(',', $builder->model->typesenseQueryBy()),
-          'filter_by' => $this->filters($builder),
-          'per_page'  => $builder->limit,
-          'page'      => 1,
-        ]));
+        return $this->performSearch($builder, array_filter($this->buildSearchParams($builder, 1, $builder->limit)));
     }
 
     /**
@@ -96,13 +125,87 @@ class TypesenseSearchEngine extends Engine
      */
     public function paginate(Builder $builder, $perPage, $page): mixed
     {
-        return $this->performSearch($builder, array_filter([
-          'q'         => $builder->query,
-          'query_by'  => implode(',', $builder->model->typesenseQueryBy()),
-          'filter_by' => $this->filters($builder),
-          'per_page'  => $perPage,
-          'page'      => $page,
-        ]));
+        return $this->performSearch($builder, array_filter($this->buildSearchParams($builder, $page, $perPage)));
+    }
+
+    /**
+     * @param  \Laravel\Scout\Builder  $builder
+     * @param  int  $page
+     * @param  int  $perPage
+     *
+     * @return array
+     */
+    private function buildSearchParams(Builder $builder, int $page, int $perPage): array
+    {
+        $params = [
+          'q'                   => $builder->query,
+          'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
+          'filter_by'           => $this->filters($builder),
+          'per_page'            => $perPage,
+          'page'                => $page,
+          'highlight_start_tag' => $this->startTag,
+          'highlight_end_tag'   => $this->endTag,
+        ];
+
+        if ($this->limitHits > 0) {
+            $params['limit_hits'] = $this->limitHits;
+        }
+
+        if (!empty($this->groupBy)) {
+            $params['group_by']    = implode(',', $this->groupBy);
+            $params['group_limit'] = $this->groupByLimit;
+        }
+
+        if (!empty($this->locationOrderBy)) {
+            $params['sort_by'] = $this->parseOrderByLocation(...$this->locationOrderBy);
+        }
+
+        if ($builder->orders) {
+            $params['sort_by'] .= $this->parseOrderBy($builder->orders);
+        }
+
+        return $params;
+    }
+
+    /**
+     * Parse location order by for sort_by
+     *
+     * @param  string  $column
+     * @param  float  $lat
+     * @param  float  $lng
+     * @param  string  $radius
+     * @param  string  $direction
+     * @param  bool  $exclude_radius
+     *
+     * @return string
+     * @noinspection PhpPureAttributeCanBeAddedInspection
+     */
+    private function parseOrderByLocation(string $column, float $lat, float $lng, string $radius, string $direction = 'asc', bool $exclude_radius = false): string
+    {
+        $direction = Str::lower($direction) === 'asc' ? 'asc' : 'desc';
+        $str       = $column.'('.$lat.', '.$lng.', ';
+        if ($exclude_radius) {
+            $str .= 'exclude_radius: '.$radius;
+        } else {
+            $str .= $radius;
+        }
+        return $str.'):'.$direction;
+    }
+
+    /**
+     * Parse sort_by fields
+     *
+     * @param  array  $orders
+     *
+     * @return string
+     */
+    private function parseOrderBy(array $orders): string
+    {
+        $sortByArr = [];
+        foreach ($orders as $order) {
+            $sortByArr[] = $order['column'].':'.$order['direction'];
+        }
+        return implode(',', $sortByArr);
     }
 
     /**
@@ -124,16 +227,37 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
+     * Prepare filters
+     *
+     * @param  Builder  $builder
      *
      * @return string
      */
     protected function filters(Builder $builder): string
     {
         return collect($builder->wheres)
-          ->map(static fn($value, $key) => $key.':='.$value)
+          ->map([
+            $this,
+            'parseFilters',
+          ])
           ->values()
           ->implode(' && ');
+    }
+
+    /**
+     * Parse typesense filters
+     *
+     * @param  array|string  $value
+     * @param  string  $key
+     *
+     * @return string
+     */
+    public function parseFilters(array|string $value, string $key): string
+    {
+        if (is_array($value)) {
+            return sprintf('%s:%s', $key, implode('', $value));
+        }
+        return sprintf('%s:=%s', $key, $value);
     }
 
     /**
@@ -248,6 +372,85 @@ class TypesenseSearchEngine extends Engine
     public function createIndex($name, array $options = []): void
     {
         throw new Exception('Typesense indexes are created automatically upon adding objects.');
+    }
+
+    /**
+     * You can aggregate search results into groups or buckets by specify one or more group_by fields. Separate multiple fields with a comma.
+     *
+     * @param  mixed  $groupBy
+     *
+     * @return $this
+     */
+    public function groupBy(array $groupBy): static
+    {
+        $this->groupBy = $groupBy;
+        return $this;
+    }
+
+    /**
+     * Maximum number of hits to be returned for every group. (default: 3)
+     *
+     * @param  int  $groupByLimit
+     *
+     * @return $this
+     */
+    public function groupByLimit(int $groupByLimit): static
+    {
+        $this->groupByLimit = $groupByLimit;
+        return $this;
+    }
+
+    /**
+     * The start tag used for the highlighted snippets. (default: <mark>)
+     *
+     * @param  string  $startTag
+     *
+     * @return $this
+     */
+    public function setHighlightStartTag(string $startTag): static
+    {
+        $this->startTag = $startTag;
+        return $this;
+    }
+
+    /**
+     * The end tag used for the highlighted snippets. (default: </mark>)
+     *
+     * @param  string  $endTag
+     *
+     * @return $this
+     */
+    public function setHighlightEndTag(string $endTag): static
+    {
+        $this->endTag = $endTag;
+        return $this;
+    }
+
+    /**
+     * Maximum number of hits that can be fetched from the collection (default: no limit)
+     *
+     * (page * per_page) should be less than this number for the search request to return results.
+     *
+     * @param  int  $limitHits
+     *
+     * @return $this
+     */
+    public function limitHits(int $limitHits): static
+    {
+        $this->limitHits = $limitHits;
+        return $this;
+    }
+
+    public function orderByLocation(string $column, float $lat, float $lng, string $radius, bool $excludeRadius): static
+    {
+        $this->locationOrderBy = [
+          'column'         => $excludeRadius,
+          'lat'            => $lat,
+          'lng'            => $lng,
+          'radius'         => $radius,
+          'exclude_radius' => $excludeRadius,
+        ];
+        return $this;
     }
 
     /**
