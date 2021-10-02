@@ -160,7 +160,12 @@ class TypesenseSearchEngine extends Engine
             $params['sort_by'] = $this->parseOrderByLocation(...$this->locationOrderBy);
         }
 
-        if ($builder->orders) {
+        if (!empty($builder->orders)) {
+            if (!empty($params['sort_by'])) {
+                $params['sort_by'] .= ',';
+            } else {
+                $params['sort_by'] = '';
+            }
             $params['sort_by'] .= $this->parseOrderBy($builder->orders);
         }
 
@@ -444,7 +449,7 @@ class TypesenseSearchEngine extends Engine
     public function orderByLocation(string $column, float $lat, float $lng, string $radius, bool $excludeRadius): static
     {
         $this->locationOrderBy = [
-          'column'         => $excludeRadius,
+          'column'         => $column,
           'lat'            => $lat,
           'lng'            => $lng,
           'radius'         => $radius,
