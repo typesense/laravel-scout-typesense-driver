@@ -1,6 +1,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/devloopsnet/laravel-typesense.svg?style=for-the-badge)](https://packagist.org/packages/devloopsnet/laravel-typesense) ![Postcardware](https://img.shields.io/badge/Postcardware-%F0%9F%92%8C-197593?style=for-the-badge)
 
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/devloopsnet/laravel-typesense?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/devloopsnet/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/devloopsnet/laravel-typesense?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense) [![Total Downloads](https://img.shields.io/packagist/dt/devloopsnet/laravel-typesense.svg?style=flat-square)](https://packagist.org/packages/devloopsnet/laravel-typesense) [![StyleCI](https://github.styleci.io/repos/253329257/shield?branch=master)](https://github.styleci.io/repos/253329257?branch=master)
 
 # Laravel Scout Typesense Engine
 
