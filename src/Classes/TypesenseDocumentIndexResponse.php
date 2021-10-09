@@ -5,8 +5,8 @@ namespace Devloops\LaravelTypesense\Classes;
 /**
  * Class TypesenseDocumentIndexResponse.
  *
- * @package Devloops\LaravelTypesense\Classes
  * @date 02/10/2021
+ *
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
 class TypesenseDocumentIndexResponse
