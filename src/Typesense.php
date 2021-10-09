@@ -2,11 +2,11 @@
 
 namespace Devloops\LaravelTypesense;
 
-use Typesense\Client;
-use Typesense\Document;
-use Typesense\Collection;
-use Typesense\Exceptions\ObjectNotFound;
 use Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
+use Typesense\Client;
+use Typesense\Collection;
+use Typesense\Document;
+use Typesense\Exceptions\ObjectNotFound;
 
 /**
  * Class Typesense.
@@ -43,15 +43,18 @@ class Typesense
     /**
      * @param $model
      *
-     * @return \Typesense\Collection
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return \Typesense\Collection
      */
     private function getOrCreateCollectionFromModel($model): Collection
     {
         $index = $this->client->getCollections()->{$model->searchableAs()};
+
         try {
             $index->retrieve();
+
             return $index;
         } catch (ObjectNotFound $exception) {
             $this->client->getCollections()
@@ -64,9 +67,10 @@ class Typesense
     /**
      * @param $model
      *
-     * @return \Typesense\Collection
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return \Typesense\Collection
      */
     public function getCollectionIndex($model): Collection
     {
@@ -77,10 +81,11 @@ class Typesense
      * @param \Typesense\Collection $collectionIndex
      * @param $array
      *
-     * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
      */
     public function upsertDocument(Collection $collectionIndex, $array): TypesenseDocumentIndexResponse
     {
@@ -91,9 +96,11 @@ class Typesense
         if ($document === null) {
             throw new ObjectNotFound();
         }
+
         try {
             $document->retrieve();
             $document->delete();
+
             return new TypesenseDocumentIndexResponse(true, null, $collectionIndex->getDocuments()
                                                                                   ->create($array));
         } catch (ObjectNotFound) {
@@ -106,30 +113,33 @@ class Typesense
      * @param \Typesense\Collection $collectionIndex
      * @param $modelId
      *
-     * @return array
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return array
      */
     public function deleteDocument(Collection $collectionIndex, $modelId): array
     {
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[(string)$modelId] ?? null;
+        $document = $collectionIndex->getDocuments()[(string) $modelId] ?? null;
         if ($document === null) {
             throw new ObjectNotFound();
         }
+
         return $document->delete();
     }
 
     /**
      * @param \Typesense\Collection $collectionIndex
-     * @param array $query
+     * @param array                 $query
      *
-     * @return array
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return array
      */
     public function deleteDocuments(Collection $collectionIndex, array $query): array
     {
@@ -142,10 +152,11 @@ class Typesense
      * @param $documents
      * @param string $action
      *
-     * @return \Illuminate\Support\Collection
      * @throws \Http\Client\Exception
      * @throws \JsonException
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function importDocuments(Collection $collectionIndex, $documents, string $action = 'upsert'): \Illuminate\Support\Collection
     {
@@ -155,16 +166,18 @@ class Typesense
         foreach ($importedDocuments as $importedDocument) {
             $result[] = new TypesenseDocumentIndexResponse(...$importedDocument);
         }
+
         return collect($result);
     }
 
     /**
      * @param string $collectionName
      *
-     * @return array
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
+     *
+     * @return array
      */
     public function deleteCollection(string $collectionName): array
     {
@@ -172,6 +185,7 @@ class Typesense
         if ($index === null) {
             throw new ObjectNotFound();
         }
+
         return $index->delete();
     }
 }

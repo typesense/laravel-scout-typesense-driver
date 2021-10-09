@@ -29,8 +29,8 @@ class BuilderMixin
 
     /**
      * @param string $column
-     * @param float $lat
-     * @param float $lng
+     * @param float  $lat
+     * @param float  $lng
      * @param string $direction
      *
      * @return \Closure
@@ -40,6 +40,7 @@ class BuilderMixin
         return function (string $column, float $lat, float $lng, string $direction = 'asc') {
             $this->engine()
                  ->orderByLocation($column, $lat, $lng, $direction);
+
             return $this;
         };
     }
@@ -55,6 +56,7 @@ class BuilderMixin
             $groupBy = is_array($groupBy) ? $groupBy : func_get_args();
             $this->engine()
                  ->groupBy($groupBy);
+
             return $this;
         };
     }
@@ -69,6 +71,7 @@ class BuilderMixin
         return function (int $groupByLimit) {
             $this->engine()
                  ->groupByLimit($groupByLimit);
+
             return $this;
         };
     }
@@ -83,6 +86,7 @@ class BuilderMixin
         return function (string $startTag) {
             $this->engine()
                  ->setHighlightStartTag($startTag);
+
             return $this;
         };
     }
@@ -97,6 +101,7 @@ class BuilderMixin
         return function (string $endTag) {
             $this->engine()
                  ->setHighlightEndTag($endTag);
+
             return $this;
         };
     }
@@ -111,6 +116,7 @@ class BuilderMixin
         return function (int $limitHits) {
             $this->engine()
                  ->limitHits($limitHits);
+
             return $this;
         };
     }
