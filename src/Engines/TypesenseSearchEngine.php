@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class TypesenseSearchEngine extends Engine
 {
-
     /**
      * @var \Devloops\LaravelTypesense\Typesense
      */
@@ -138,30 +137,30 @@ class TypesenseSearchEngine extends Engine
     private function buildSearchParams(Builder $builder, int $page, int $perPage): array
     {
         $params = [
-          'q'                   => $builder->query,
-          'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
-          'filter_by'           => $this->filters($builder),
-          'per_page'            => $perPage,
-          'page'                => $page,
+          'q' => $builder->query,
+          'query_by' => implode(',', $builder->model->typesenseQueryBy()),
+          'filter_by' => $this->filters($builder),
+          'per_page' => $perPage,
+          'page' => $page,
           'highlight_start_tag' => $this->startTag,
-          'highlight_end_tag'   => $this->endTag,
+          'highlight_end_tag' => $this->endTag,
         ];
 
         if ($this->limitHits > 0) {
             $params['limit_hits'] = $this->limitHits;
         }
 
-        if (!empty($this->groupBy)) {
-            $params['group_by']    = implode(',', $this->groupBy);
+        if (! empty($this->groupBy)) {
+            $params['group_by'] = implode(',', $this->groupBy);
             $params['group_limit'] = $this->groupByLimit;
         }
 
-        if (!empty($this->locationOrderBy)) {
+        if (! empty($this->locationOrderBy)) {
             $params['sort_by'] = $this->parseOrderByLocation(...$this->locationOrderBy);
         }
 
-        if (!empty($builder->orders)) {
-            if (!empty($params['sort_by'])) {
+        if (! empty($builder->orders)) {
+            if (! empty($params['sort_by'])) {
                 $params['sort_by'] .= ',';
             } else {
                 $params['sort_by'] = '';
@@ -186,7 +185,7 @@ class TypesenseSearchEngine extends Engine
     private function parseOrderByLocation(string $column, float $lat, float $lng, string $direction = 'asc'): string
     {
         $direction = Str::lower($direction) === 'asc' ? 'asc' : 'desc';
-        $str       = $column.'('.$lat.', '.$lng.')';
+        $str = $column.'('.$lat.', '.$lng.')';
         return $str.':'.$direction;
     }
 
@@ -279,7 +278,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function map(Builder $builder, $results, $model): \Illuminate\Database\Eloquent\Collection
     {
-        if ((int) ($results['found'] ?? 0) === 0) {
+        if ((int)($results['found'] ?? 0) === 0) {
             return $model->newCollection();
         }
 
@@ -304,7 +303,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function getTotalCount($results): int
     {
-        return (int) ($results['found'] ?? 0);
+        return (int)($results['found'] ?? 0);
     }
 
     /**
@@ -338,7 +337,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function lazyMap(Builder $builder, $results, $model): LazyCollection
     {
-        if ((int) ($results['found'] ?? 0) === 0) {
+        if ((int)($results['found'] ?? 0) === 0) {
             return LazyCollection::make($model->newCollection());
         }
 
@@ -452,9 +451,9 @@ class TypesenseSearchEngine extends Engine
     public function orderByLocation(string $column, float $lat, float $lng, string $direction): static
     {
         $this->locationOrderBy = [
-          'column'    => $column,
-          'lat'       => $lat,
-          'lng'       => $lng,
+          'column' => $column,
+          'lat' => $lat,
+          'lng' => $lng,
           'direction' => $direction,
         ];
         return $this;
@@ -472,5 +471,4 @@ class TypesenseSearchEngine extends Engine
     {
         return $this->typesense->deleteCollection($name);
     }
-
 }

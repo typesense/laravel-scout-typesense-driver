@@ -11,7 +11,6 @@ namespace Devloops\LaravelTypesense\Classes;
  */
 class TypesenseDocumentIndexResponse
 {
-
     public function __construct(private bool $success, private ?string $error = null, private ?array $document = null)
     {
     }
@@ -39,6 +38,4 @@ class TypesenseDocumentIndexResponse
     {
         return $this->document;
     }
-
-
 }

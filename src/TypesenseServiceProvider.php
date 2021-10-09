@@ -7,6 +7,7 @@ use Laravel\Scout\EngineManager;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Builder;
+use Devloops\LaravelTypesense\Mixin\BuilderMixin;
 use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;
 
 /**
@@ -18,7 +19,10 @@ use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;
  */
 class TypesenseServiceProvider extends ServiceProvider
 {
-
+    /**
+     * @throws \ReflectionException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function boot(): void
     {
         $this->app[EngineManager::class]->extend('typesense', static function ($app) {
@@ -29,6 +33,9 @@ class TypesenseServiceProvider extends ServiceProvider
         $this->registerMacros();
     }
 
+    /**
+     * Register singletons and aliases
+     */
     public function register(): void
     {
         $this->app->singleton(Typesense::class, static function () {
@@ -39,50 +46,12 @@ class TypesenseServiceProvider extends ServiceProvider
         $this->app->alias(Typesense::class, 'typesense');
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     private function registerMacros(): void
     {
-        Builder::macro('count', function () {
-            return $this->engine()
-                        ->getTotalCount($this->engine()
-                                             ->search($this));
-        });
-
-        Builder::macro('orderByLocation', function (string $column, float $lat, float $lng, string $direction = 'asc') {
-            $this->engine()
-                 ->orderByLocation($column, $lat, $lng, $direction);
-            return $this;
-        });
-
-        Builder::macro('groupBy', function (array|string $groupBy) {
-            $groupBy = is_array($groupBy) ? $groupBy : func_get_args();
-            $this->engine()
-                 ->groupBy($groupBy);
-            return $this;
-        });
-
-        Builder::macro('groupByLimit', function (int $groupByLimit) {
-            $this->engine()
-                 ->groupByLimit($groupByLimit);
-            return $this;
-        });
-
-        Builder::macro('setHighlightStartTag', function (string $startTag) {
-            $this->engine()
-                 ->setHighlightStartTag($startTag);
-            return $this;
-        });
-
-        Builder::macro('setHighlightEndTag', function (string $endTag) {
-            $this->engine()
-                 ->setHighlightEndTag($endTag);
-            return $this;
-        });
-
-        Builder::macro('limitHits', function (int $limitHits) {
-            $this->engine()
-                 ->limitHits($limitHits);
-            return $this;
-        });
+        Builder::mixin($this->app->make(BuilderMixin::class));
     }
-
 }

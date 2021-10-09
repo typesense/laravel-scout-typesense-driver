@@ -9,15 +9,14 @@ use Typesense\Exceptions\ObjectNotFound;
 use Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
 
 /**
- * Class Typesense
+ * Class Typesense.
  *
- * @package Typesense\LaravelTypesense
  * @date    4/5/20
+ *
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
 class Typesense
 {
-
     /**
      * @var \Typesense\Client
      */
@@ -53,7 +52,6 @@ class Typesense
         $index = $this->client->getCollections()->{$model->searchableAs()};
         try {
             $index->retrieve();
-
             return $index;
         } catch (ObjectNotFound $exception) {
             $this->client->getCollections()
@@ -90,11 +88,9 @@ class Typesense
          * @var $document Document
          */
         $document = $collectionIndex->getDocuments()[$array['id']] ?? null;
-
         if ($document === null) {
             throw new ObjectNotFound();
         }
-
         try {
             $document->retrieve();
             $document->delete();
@@ -120,7 +116,7 @@ class Typesense
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[(string) $modelId] ?? null;
+        $document = $collectionIndex->getDocuments()[(string)$modelId] ?? null;
         if ($document === null) {
             throw new ObjectNotFound();
         }
@@ -155,7 +151,6 @@ class Typesense
     {
         $importedDocuments = $collectionIndex->getDocuments()
                                              ->import($documents, ['action' => $action]);
-
         $result = [];
         foreach ($importedDocuments as $importedDocument) {
             $result[] = new TypesenseDocumentIndexResponse(...$importedDocument);
@@ -179,5 +174,4 @@ class Typesense
         }
         return $index->delete();
     }
-
 }
