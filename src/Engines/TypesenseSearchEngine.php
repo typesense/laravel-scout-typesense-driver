@@ -2,21 +2,21 @@
 
 namespace Devloops\LaravelTypesense\Engines;
 
-use Exception;
-use Laravel\Scout\Builder;
-use Illuminate\Support\Str;
-use Laravel\Scout\Engines\Engine;
-use Illuminate\Support\Collection;
-use Illuminate\Support\LazyCollection;
-use Illuminate\Database\Eloquent\Model;
 use Devloops\LaravelTypesense\Typesense;
+use Exception;
+use Illuminate\Support\LazyCollection;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Builder;
+use Laravel\Scout\Engines\Engine;
 
 /**
- * Class TypesenseSearchEngine
+ * Class TypesenseSearchEngine.
  *
- * @package Devloops\LaravelTypesense\Engines
  * @date    4/5/20
+ *
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
 class TypesenseSearchEngine extends Engine
@@ -59,7 +59,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * TypesenseSearchEngine constructor.
      *
-     * @param  \Devloops\LaravelTypesense\Typesense  $typesense
+     * @param \Devloops\LaravelTypesense\Typesense $typesense
      */
     public function __construct(Typesense $typesense)
     {
@@ -67,7 +67,7 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Collection<int, Model>|Model[]  $models
+     * @param \Illuminate\Database\Eloquent\Collection<int, Model>|Model[] $models
      *
      * @throws \Http\Client\Exception
      * @throws \JsonException
@@ -87,7 +87,7 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Collection  $models
+     * @param \Illuminate\Database\Eloquent\Collection $models
      *
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\TypesenseClientError
@@ -102,7 +102,7 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
+     * @param \Laravel\Scout\Builder $builder
      *
      * @return mixed
      * @throws \Http\Client\Exception
@@ -114,9 +114,9 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
-     * @param  int  $perPage
-     * @param  int  $page
+     * @param \Laravel\Scout\Builder $builder
+     * @param int $perPage
+     * @param int $page
      *
      * @return mixed
      * @throws \Http\Client\Exception
@@ -128,39 +128,39 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
-     * @param  int  $page
-     * @param  int  $perPage
+     * @param \Laravel\Scout\Builder $builder
+     * @param int $page
+     * @param int $perPage
      *
      * @return array
      */
     private function buildSearchParams(Builder $builder, int $page, int $perPage): array
     {
         $params = [
-          'q' => $builder->query,
-          'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-          'filter_by' => $this->filters($builder),
-          'per_page' => $perPage,
-          'page' => $page,
+          'q'                   => $builder->query,
+          'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
+          'filter_by'           => $this->filters($builder),
+          'per_page'            => $perPage,
+          'page'                => $page,
           'highlight_start_tag' => $this->startTag,
-          'highlight_end_tag' => $this->endTag,
+          'highlight_end_tag'   => $this->endTag,
         ];
 
         if ($this->limitHits > 0) {
             $params['limit_hits'] = $this->limitHits;
         }
 
-        if (! empty($this->groupBy)) {
+        if (!empty($this->groupBy)) {
             $params['group_by'] = implode(',', $this->groupBy);
             $params['group_limit'] = $this->groupByLimit;
         }
 
-        if (! empty($this->locationOrderBy)) {
+        if (!empty($this->locationOrderBy)) {
             $params['sort_by'] = $this->parseOrderByLocation(...$this->locationOrderBy);
         }
 
-        if (! empty($builder->orders)) {
-            if (! empty($params['sort_by'])) {
+        if (!empty($builder->orders)) {
+            if (!empty($params['sort_by'])) {
                 $params['sort_by'] .= ',';
             } else {
                 $params['sort_by'] = '';
@@ -172,12 +172,12 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * Parse location order by for sort_by
+     * Parse location order by for sort_by.
      *
-     * @param  string  $column
-     * @param  float  $lat
-     * @param  float  $lng
-     * @param  string  $direction
+     * @param string $column
+     * @param float $lat
+     * @param float $lng
+     * @param string $direction
      *
      * @return string
      * @noinspection PhpPureAttributeCanBeAddedInspection
@@ -192,7 +192,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * Parse sort_by fields
      *
-     * @param  array  $orders
+     * @param array $orders
      *
      * @return string
      */
@@ -206,8 +206,8 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
-     * @param  array  $options
+     * @param \Laravel\Scout\Builder $builder
+     * @param array $options
      *
      * @return mixed
      * @throws \Http\Client\Exception
@@ -226,7 +226,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * Prepare filters
      *
-     * @param  Builder  $builder
+     * @param Builder $builder
      *
      * @return string
      */
@@ -244,8 +244,8 @@ class TypesenseSearchEngine extends Engine
     /**
      * Parse typesense filters
      *
-     * @param  array|string  $value
-     * @param  string  $key
+     * @param array|string $value
+     * @param string $key
      *
      * @return string
      */
@@ -258,7 +258,7 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  mixed  $results
+     * @param mixed $results
      *
      * @return \Illuminate\Support\Collection
      */
@@ -270,9 +270,9 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
-     * @param  mixed  $results
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Scout\Builder $builder
+     * @param mixed $results
+     * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -307,7 +307,7 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @throws \Http\Client\Exception
      * @throws \Typesense\Exceptions\TypesenseClientError
@@ -329,9 +329,9 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  \Laravel\Scout\Builder  $builder
-     * @param  mixed  $results
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Laravel\Scout\Builder $builder
+     * @param mixed $results
+     * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return \Illuminate\Support\LazyCollection
      */
@@ -360,8 +360,8 @@ class TypesenseSearchEngine extends Engine
     }
 
     /**
-     * @param  string  $name
-     * @param  array  $options
+     * @param string $name
+     * @param array $options
      *
      * @return void
      * @throws \Exception
@@ -374,7 +374,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * You can aggregate search results into groups or buckets by specify one or more group_by fields. Separate multiple fields with a comma.
      *
-     * @param  mixed  $groupBy
+     * @param mixed $groupBy
      *
      * @return $this
      */
@@ -387,7 +387,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * Maximum number of hits to be returned for every group. (default: 3)
      *
-     * @param  int  $groupByLimit
+     * @param int $groupByLimit
      *
      * @return $this
      */
@@ -400,7 +400,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * The start tag used for the highlighted snippets. (default: <mark>)
      *
-     * @param  string  $startTag
+     * @param string $startTag
      *
      * @return $this
      */
@@ -413,7 +413,7 @@ class TypesenseSearchEngine extends Engine
     /**
      * The end tag used for the highlighted snippets. (default: </mark>)
      *
-     * @param  string  $endTag
+     * @param string $endTag
      *
      * @return $this
      */
@@ -428,7 +428,7 @@ class TypesenseSearchEngine extends Engine
      *
      * (page * per_page) should be less than this number for the search request to return results.
      *
-     * @param  int  $limitHits
+     * @param int $limitHits
      *
      * @return $this
      */
@@ -441,26 +441,26 @@ class TypesenseSearchEngine extends Engine
     /**
      * Add location to order by clause
      *
-     * @param  string  $column
-     * @param  float  $lat
-     * @param  float  $lng
-     * @param  string  $direction
+     * @param string $column
+     * @param float $lat
+     * @param float $lng
+     * @param string $direction
      *
      * @return $this
      */
     public function orderByLocation(string $column, float $lat, float $lng, string $direction): static
     {
         $this->locationOrderBy = [
-          'column' => $column,
-          'lat' => $lat,
-          'lng' => $lng,
+          'column'    => $column,
+          'lat'       => $lat,
+          'lng'       => $lng,
           'direction' => $direction,
         ];
         return $this;
     }
 
     /**
-     * @param  string  $name
+     * @param string $name
      *
      * @return array
      * @throws \Http\Client\Exception

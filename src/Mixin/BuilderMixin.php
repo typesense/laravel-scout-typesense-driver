@@ -28,10 +28,10 @@ class BuilderMixin
     }
 
     /**
-     * @param  string  $column
-     * @param  float  $lat
-     * @param  float  $lng
-     * @param  string  $direction
+     * @param string $column
+     * @param float $lat
+     * @param float $lng
+     * @param string $direction
      *
      * @return \Closure
      */
@@ -45,7 +45,7 @@ class BuilderMixin
     }
 
     /**
-     * @param  array|string  $groupBy
+     * @param array|string $groupBy
      *
      * @return \Closure
      */
@@ -60,7 +60,7 @@ class BuilderMixin
     }
 
     /**
-     * @param  int  $groupByLimit
+     * @param int $groupByLimit
      *
      * @return \Closure
      */
@@ -74,7 +74,7 @@ class BuilderMixin
     }
 
     /**
-     * @param  string  $startTag
+     * @param string $startTag
      *
      * @return \Closure
      */
@@ -88,7 +88,7 @@ class BuilderMixin
     }
 
     /**
-     * @param  string  $endTag
+     * @param string $endTag
      *
      * @return \Closure
      */
@@ -102,7 +102,7 @@ class BuilderMixin
     }
 
     /**
-     * @param  int  $limitHits
+     * @param int $limitHits
      *
      * @return \Closure
      */

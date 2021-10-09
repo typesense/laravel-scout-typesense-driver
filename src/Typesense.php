@@ -25,7 +25,7 @@ class Typesense
     /**
      * Typesense constructor.
      *
-     * @param  \Typesense\Client  $client
+     * @param \Typesense\Client $client
      */
     public function __construct(Client $client)
     {
@@ -74,7 +74,7 @@ class Typesense
     }
 
     /**
-     * @param  \Typesense\Collection  $collectionIndex
+     * @param \Typesense\Collection $collectionIndex
      * @param $array
      *
      * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
@@ -103,7 +103,7 @@ class Typesense
     }
 
     /**
-     * @param  \Typesense\Collection  $collectionIndex
+     * @param \Typesense\Collection $collectionIndex
      * @param $modelId
      *
      * @return array
@@ -124,8 +124,8 @@ class Typesense
     }
 
     /**
-     * @param  \Typesense\Collection  $collectionIndex
-     * @param  array  $query
+     * @param \Typesense\Collection $collectionIndex
+     * @param array $query
      *
      * @return array
      * @throws \Http\Client\Exception
@@ -138,9 +138,9 @@ class Typesense
     }
 
     /**
-     * @param  \Typesense\Collection  $collectionIndex
+     * @param \Typesense\Collection $collectionIndex
      * @param $documents
-     * @param  string  $action
+     * @param string $action
      *
      * @return \Illuminate\Support\Collection
      * @throws \Http\Client\Exception
@@ -159,7 +159,7 @@ class Typesense
     }
 
     /**
-     * @param  string  $collectionName
+     * @param string $collectionName
      *
      * @return array
      * @throws \Http\Client\Exception

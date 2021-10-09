@@ -3,7 +3,7 @@
 namespace Devloops\LaravelTypesense\Interfaces;
 
 /**
- * Interface TypesenseSearch
+ * Interface TypesenseSearch.
  */
 interface TypesenseSearch
 {

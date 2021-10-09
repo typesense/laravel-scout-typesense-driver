@@ -3,18 +3,18 @@
 namespace Devloops\LaravelTypesense;
 
 use Typesense\Client;
+use Laravel\Scout\Builder;
 use Laravel\Scout\EngineManager;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Scout\Builder;
 use Devloops\LaravelTypesense\Mixin\BuilderMixin;
 use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;
 
 /**
- * Class TypesenseServiceProvider
+ * Class TypesenseServiceProvider.
  *
- * @package Devloops\LaravelTypesense
  * @date    4/5/20
+ *
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
 class TypesenseServiceProvider extends ServiceProvider
@@ -34,7 +34,7 @@ class TypesenseServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register singletons and aliases
+     * Register singletons and aliases.
      */
     public function register(): void
     {
