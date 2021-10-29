@@ -82,7 +82,7 @@ class TypesenseSearchEngine extends Engine
             $models->each->pushSoftDeleteMetadata();
         }
 
-        $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+        $this->typesense->importDocuments($collection, $models->map(fn ($m) => $m->toSearchableArray())
                                                               ->toArray());
     }
 
@@ -104,10 +104,10 @@ class TypesenseSearchEngine extends Engine
     /**
      * @param \Laravel\Scout\Builder $builder
      *
-     * @return mixed
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return mixed
      */
     public function search(Builder $builder): mixed
     {
@@ -119,10 +119,10 @@ class TypesenseSearchEngine extends Engine
      * @param int                    $perPage
      * @param int                    $page
      *
-     * @return mixed
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return mixed
      */
     public function paginate(Builder $builder, $perPage, $page): mixed
     {
@@ -139,13 +139,13 @@ class TypesenseSearchEngine extends Engine
     private function buildSearchParams(Builder $builder, int $page, int $perPage): array
     {
         $params = [
-          'q'                   => $builder->query,
-          'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
-          'filter_by'           => $this->filters($builder),
-          'per_page'            => $perPage,
-          'page'                => $page,
-          'highlight_start_tag' => $this->startTag,
-          'highlight_end_tag'   => $this->endTag,
+            'q'                   => $builder->query,
+            'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
+            'filter_by'           => $this->filters($builder),
+            'per_page'            => $perPage,
+            'page'                => $page,
+            'highlight_start_tag' => $this->startTag,
+            'highlight_end_tag'   => $this->endTag,
         ];
 
         if ($this->limitHits > 0) {
@@ -213,10 +213,10 @@ class TypesenseSearchEngine extends Engine
      * @param \Laravel\Scout\Builder $builder
      * @param array                  $options
      *
-     * @return mixed
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return mixed
      */
     protected function performSearch(Builder $builder, array $options = []): mixed
     {
@@ -240,8 +240,8 @@ class TypesenseSearchEngine extends Engine
     {
         return collect($builder->wheres)
           ->map([
-            $this,
-            'parseFilters',
+              $this,
+              'parseFilters',
           ])
           ->values()
           ->implode(' && ');
@@ -311,7 +311,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function getTotalCount($results): int
     {
-        return (int)($results['found'] ?? 0);
+        return (int) ($results['found'] ?? 0);
     }
 
     /**
@@ -345,7 +345,7 @@ class TypesenseSearchEngine extends Engine
      */
     public function lazyMap(Builder $builder, $results, $model): LazyCollection
     {
-        if ((int)($results['found'] ?? 0) === 0) {
+        if ((int) ($results['found'] ?? 0) === 0) {
             return LazyCollection::make($model->newCollection());
         }
 
@@ -371,9 +371,9 @@ class TypesenseSearchEngine extends Engine
      * @param string $name
      * @param array  $options
      *
-     * @return void
      * @throws \Exception
      *
+     * @return void
      */
     public function createIndex($name, array $options = []): void
     {
@@ -465,10 +465,10 @@ class TypesenseSearchEngine extends Engine
     public function orderByLocation(string $column, float $lat, float $lng, string $direction): static
     {
         $this->locationOrderBy = [
-          'column'    => $column,
-          'lat'       => $lat,
-          'lng'       => $lng,
-          'direction' => $direction,
+            'column'    => $column,
+            'lat'       => $lat,
+            'lng'       => $lng,
+            'direction' => $direction,
         ];
 
         return $this;
@@ -477,11 +477,11 @@ class TypesenseSearchEngine extends Engine
     /**
      * @param string $name
      *
-     * @return array
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return array
      */
     public function deleteIndex($name): array
     {
