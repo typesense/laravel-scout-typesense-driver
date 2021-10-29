@@ -97,7 +97,7 @@ class TypesenseSearchEngine extends Engine
         $models->each(function (Model $model) {
             $collectionIndex = $this->typesense->getCollectionIndex($model);
 
-            $this->typesense->deleteDocument($collectionIndex, $model->{$model->getKey()});
+            $this->typesense->deleteDocument($collectionIndex, $model->getScoutKey());
         });
     }
 

@@ -124,10 +124,7 @@ class Typesense
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[(string) $modelId] ?? null;
-        if ($document === null) {
-            throw new ObjectNotFound();
-        }
+        $document = $collectionIndex->getDocuments()[(string) $modelId];
 
         return $document->delete();
     }
