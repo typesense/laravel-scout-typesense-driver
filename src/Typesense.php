@@ -43,10 +43,10 @@ class Typesense
     /**
      * @param $model
      *
-     * @return \Typesense\Collection
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return \Typesense\Collection
      */
     private function getOrCreateCollectionFromModel($model): Collection
     {
@@ -67,10 +67,10 @@ class Typesense
     /**
      * @param $model
      *
-     * @return \Typesense\Collection
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return \Typesense\Collection
      */
     public function getCollectionIndex($model): Collection
     {
@@ -81,11 +81,11 @@ class Typesense
      * @param \Typesense\Collection $collectionIndex
      * @param                       $array
      *
-     * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
      */
     public function upsertDocument(Collection $collectionIndex, $array): TypesenseDocumentIndexResponse
     {
@@ -113,18 +113,18 @@ class Typesense
      * @param \Typesense\Collection $collectionIndex
      * @param                       $modelId
      *
-     * @return array
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return array
      */
     public function deleteDocument(Collection $collectionIndex, $modelId): array
     {
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[(string)$modelId] ?? null;
+        $document = $collectionIndex->getDocuments()[(string) $modelId] ?? null;
         if ($document === null) {
             throw new ObjectNotFound();
         }
@@ -136,10 +136,10 @@ class Typesense
      * @param \Typesense\Collection $collectionIndex
      * @param array                 $query
      *
-     * @return array
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return array
      */
     public function deleteDocuments(Collection $collectionIndex, array $query): array
     {
@@ -152,11 +152,11 @@ class Typesense
      * @param                       $documents
      * @param string                $action
      *
-     * @return \Illuminate\Support\Collection
      * @throws \JsonException
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function importDocuments(Collection $collectionIndex, $documents, string $action = 'upsert'): \Illuminate\Support\Collection
     {
@@ -173,11 +173,11 @@ class Typesense
     /**
      * @param string $collectionName
      *
-     * @return array
      * @throws \Typesense\Exceptions\ObjectNotFound
      * @throws \Typesense\Exceptions\TypesenseClientError
-     *
      * @throws \Http\Client\Exception
+     *
+     * @return array
      */
     public function deleteCollection(string $collectionName): array
     {
