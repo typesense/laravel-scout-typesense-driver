@@ -5,14 +5,22 @@ namespace Devloops\LaravelTypesense\Classes;
 /**
  * Class TypesenseDocumentIndexResponse.
  *
- * @date 02/10/2021
+ * @date   02/10/2021
  *
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
  */
 class TypesenseDocumentIndexResponse
 {
-    public function __construct(private bool $success, private ?string $error = null, private ?array $document = null)
+    public function __construct(private ?int $code, private bool $success, private ?string $error = null, private ?array $document = null)
     {
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCode(): ?int
+    {
+        return $this->code;
     }
 
     /**
