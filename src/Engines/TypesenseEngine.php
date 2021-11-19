@@ -132,12 +132,12 @@ class TypesenseEngine extends Engine
 
     /**
      * @param \Laravel\Scout\Builder $builder
-     * @param int                    $page
-     * @param int                    $perPage
+     * @param int $page
+     * @param int|null $perPage
      *
      * @return array
      */
-    private function buildSearchParams(Builder $builder, int $page, int $perPage): array
+    private function buildSearchParams(Builder $builder, int $page, int | null $perPage): array
     {
         $params = [
             'q'                   => $builder->query,
@@ -247,6 +247,24 @@ class TypesenseEngine extends Engine
           ->values()
           ->implode(' && ');
     }
+
+    /**
+     * Parse typesense filters.
+     *
+     * @param array|string $value
+     * @param string       $key
+     *
+     * @return string
+     */
+    public function parseFilters(array|string $value, string $key): string
+    {
+        if (is_array($value)) {
+            return sprintf('%s:%s', $key, implode('', $value));
+        }
+
+        return sprintf('%s:=%s', $key, $value);
+    }
+
 
     /**
      * @param mixed $results
