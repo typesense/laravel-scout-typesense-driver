@@ -1,9 +1,9 @@
 <?php
 
-namespace Devloops\LaravelTypesense;
+namespace Typesense\LaravelTypesense;
 
-use Devloops\LaravelTypesense\Engines\TypesenseSearchEngine;
-use Devloops\LaravelTypesense\Mixin\BuilderMixin;
+use Typesense\LaravelTypesense\Engines\TypesenseEngine;
+use Typesense\LaravelTypesense\Mixin\BuilderMixin;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\Builder;
@@ -28,7 +28,7 @@ class TypesenseServiceProvider extends ServiceProvider
         $this->app[EngineManager::class]->extend('typesense', static function ($app) {
             $client = new Client(Config::get('scout.typesense'));
 
-            return new TypesenseSearchEngine(new Typesense($client));
+            return new TypesenseEngine(new Typesense($client));
         });
 
         $this->registerMacros();

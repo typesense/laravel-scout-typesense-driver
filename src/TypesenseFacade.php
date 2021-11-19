@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\LaravelTypesense;
+namespace Typesense\LaravelTypesense;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\LaravelTypesense\Mixin;
+namespace Typesense\LaravelTypesense\Mixin;
 
 use Closure;
 

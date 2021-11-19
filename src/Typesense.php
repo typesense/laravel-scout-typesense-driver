@@ -1,10 +1,11 @@
 <?php
 
-namespace Devloops\LaravelTypesense;
+namespace Typesense\LaravelTypesense;
 
-use Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
+use Typesense\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
 use Typesense\Client;
 use Typesense\Collection;
+use Typesense\Document;
 use Typesense\Exceptions\ObjectNotFound;
 
 /**
@@ -85,7 +86,7 @@ class Typesense
      * @throws \Typesense\Exceptions\TypesenseClientError
      * @throws \Http\Client\Exception
      *
-     * @return \Devloops\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
+     * @return \Typesense\LaravelTypesense\Classes\TypesenseDocumentIndexResponse
      */
     public function upsertDocument(Collection $collectionIndex, $array): TypesenseDocumentIndexResponse
     {

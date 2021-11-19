@@ -1,6 +1,6 @@
 <?php
 
-namespace Devloops\LaravelTypesense\Classes;
+namespace Typesense\LaravelTypesense\Classes;
 
 /**
  * Class TypesenseDocumentIndexResponse.
