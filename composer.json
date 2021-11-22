@@ -49,6 +49,11 @@
     "illuminate/support": "^7.0|^8.0",
     "typesense/typesense-php": "^4.0"
   },
+  "config": {
+    "platform": {
+      "php": "8.0"
+    }
+  },
   "suggest": {
     "typesense/typesense-php": "Required to use the Typesense php client."
   },

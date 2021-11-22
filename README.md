@@ -22,14 +22,22 @@ This package makes it easy to add full text search support to your models with L
 
 
 ## Installation
+The Typesense PHP SDK uses httplug to interface with various PHP HTTP libraries through a single API. 
 
-You can install the package via composer:
+First, install the correct httplug adapter based on your `guzzlehttp/guzzle` version. For example, if you're on 
+Laravel 8, which includes Guzzle 7, then run this:
 
-``` bash
+```bash
+composer require php-http/guzzle7-adapter
+```
+
+Then install the driver:
+
+```bash
 composer require typesense/laravel-scout-typesense-driver
 ```
 
-Add the service provider:
+And add the service provider:
 
 ```php
 // config/app.php
@@ -49,7 +57,7 @@ Ensure you have Laravel Scout as a provider too otherwise you will get an "unres
 ],
 ```
 
-Add  `SCOUT_DRIVER=typesense` to your `.env` file
+Add `SCOUT_DRIVER=typesense` to your `.env` file
 
 Then you should publish `scout.php` configuration file to your config directory
 
@@ -187,7 +195,6 @@ $todos->searchable();
   and changing the config/scout.php config key from `typesensesearch` to `typesense`
 - Instead of importing `Devloops\LaravelTypesense\*`, you should import `Typesense\LaravelTypesense\*`
 - Instead of models implementing `Devloops\LaravelTypesense\Interfaces\TypesenseSearch`, they should implement `Typesense\LaravelTypesense\Interfaces\TypesenseDocument`
-- In the rare case where the `TypesenseEngine` method `delete` is called directly, all the model instances passed to the method must now belong to the same Typesense index
 
 ## Authors
 This package was originally authored by [Abdullah Al-Faqeir](https://github.com/AbdullahFaqeir) and his company DevLoops: https://github.com/devloopsnet/laravel-scout-typesense-engine. It has since been adopted into the Typesense Github org. 

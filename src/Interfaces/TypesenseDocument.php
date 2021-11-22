@@ -9,9 +9,7 @@ namespace Typesense\LaravelTypesense\Interfaces;
  */
 interface TypesenseDocument
 {
-
     public function typesenseQueryBy(): array;
 
     public function getCollectionSchema(): array;
-
 }
