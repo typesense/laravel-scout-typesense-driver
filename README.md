@@ -22,14 +22,22 @@ This package makes it easy to add full text search support to your models with L
 
 
 ## Installation
+The Typesense PHP SDK uses httplug to interface with various PHP HTTP libraries through a single API. 
 
-You can install the package via composer:
+First, install the correct httplug adapter based on your `guzzlehttp/guzzle` version. For example, if you're on 
+Laravel 8, which includes Guzzle 7, then run this:
 
-``` bash
+```bash
+composer require php-http/guzzle7-adapter
+```
+
+Then install the driver:
+
+```bash
 composer require typesense/laravel-scout-typesense-driver
 ```
 
-Add the service provider:
+And add the service provider:
 
 ```php
 // config/app.php
@@ -49,7 +57,7 @@ Ensure you have Laravel Scout as a provider too otherwise you will get an "unres
 ],
 ```
 
-Add  `SCOUT_DRIVER=typesense` to your `.env` file
+Add `SCOUT_DRIVER=typesense` to your `.env` file
 
 Then you should publish `scout.php` configuration file to your config directory
 
