@@ -2,6 +2,7 @@
 
 namespace Typesense\LaravelTypesense;
 
+use Typesense\Exceptions\TypesenseClientError;
 use Typesense\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
 use Typesense\Client;
 use Typesense\Collection;
@@ -163,8 +164,13 @@ class Typesense
     {
         $importedDocuments = $collectionIndex->getDocuments()
                                              ->import($documents, ['action' => $action]);
+
         $result = [];
         foreach ($importedDocuments as $importedDocument) {
+            if ($importedDocument["code"] !== 200) {
+                throw new TypesenseClientError("Error importing document: ${importedDocument['error']}");
+            }
+
             $result[] = new TypesenseDocumentIndexResponse($importedDocument['code'] ?? 0, $importedDocument['success'], $importedDocument['error'] ?? null, json_decode($importedDocument['document'] ?? '[]', true, 512, JSON_THROW_ON_ERROR));
         }
 
