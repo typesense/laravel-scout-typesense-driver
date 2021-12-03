@@ -79,7 +79,7 @@ class TypesenseEngine extends Engine
     {
         $collection = $this->typesense->getCollectionIndex($models->first());
 
-        if ($this->usesSoftDelete($models->first()) && Config::get('scout.soft_delete', false)) {
+        if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
             $models->each->pushSoftDeleteMetadata();
         }
 
