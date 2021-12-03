@@ -94,10 +94,7 @@ class Typesense
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[$array['id']] ?? null;
-        if ($document === null) {
-            throw new ObjectNotFound();
-        }
+        $document = $collectionIndex->getDocuments()[$array['id']];
 
         try {
             $document->retrieve();
@@ -126,10 +123,7 @@ class Typesense
         /**
          * @var $document Document
          */
-        $document = $collectionIndex->getDocuments()[(string) $modelId] ?? null;
-        if ($document === null) {
-            throw new ObjectNotFound();
-        }
+        $document = $collectionIndex->getDocuments()[(string) $modelId];
 
         return $document->delete();
     }
@@ -188,11 +182,7 @@ class Typesense
      */
     public function deleteCollection(string $collectionName): array
     {
-        $index = $this->client->getCollections()->{$collectionName} ?? null;
-        if ($index === null) {
-            throw new ObjectNotFound();
-        }
-
+        $index = $this->client->getCollections()->{$collectionName};
         return $index->delete();
     }
 }
