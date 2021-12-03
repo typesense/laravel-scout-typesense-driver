@@ -11,9 +11,10 @@ use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine;
+use Illuminate\Support\Facades\Config;
 
 /**
- * Class TypesenseSearchEngine.
+ * Class TypesenseEngine.
  *
  * @date    4/5/20
  *
@@ -22,7 +23,7 @@ use Laravel\Scout\Engines\Engine;
 class TypesenseEngine extends Engine
 {
     /**
-     * @var \Typesense\LaravelTypesense\Typesense
+     * @var Typesense
      */
     private Typesense $typesense;
 
@@ -57,9 +58,9 @@ class TypesenseEngine extends Engine
     private array $locationOrderBy = [];
 
     /**
-     * TypesenseSearchEngine constructor.
+     * TypesenseEngine constructor.
      *
-     * @param \Typesense\LaravelTypesense\Typesense $typesense
+     * @param Typesense $typesense
      */
     public function __construct(Typesense $typesense)
     {
@@ -78,7 +79,7 @@ class TypesenseEngine extends Engine
     {
         $collection = $this->typesense->getCollectionIndex($models->first());
 
-        if ($this->usesSoftDelete($models->first()) && $models->first()->softDelete) {
+        if ($this->usesSoftDelete($models->first()) && Config::get('scout.soft_delete', false)) {
             $models->each->pushSoftDeleteMetadata();
         }
 
