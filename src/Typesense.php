@@ -167,7 +167,7 @@ class Typesense
 
         $result = [];
         foreach ($importedDocuments as $importedDocument) {
-            if ($importedDocument["code"] !== 200) {
+            if (!$importedDocument['success']) {
                 throw new TypesenseClientError("Error importing document: ${importedDocument['error']}");
             }
 
