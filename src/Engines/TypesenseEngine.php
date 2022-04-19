@@ -58,6 +58,86 @@ class TypesenseEngine extends Engine
     private array $locationOrderBy = [];
 
     /**
+     * @var array
+     */
+    private array $facetBy = [];
+
+    /**
+     * @var int
+     */
+    private int $maxFacetValues = 10;
+
+    /**
+     * @var bool
+     */
+    private bool $useCache = false;
+
+    /**
+     * @var int
+     */
+    private int $cacheTtl = 60;
+
+    /**
+     * @var int
+     */
+    private int $snippetThreshold = 30;
+
+    /**
+     * @var bool
+     */
+    private bool $exhaustiveSearch = false;
+
+    /**
+     * @var bool
+     */
+    private bool $prioritizeExactMatch = true;
+
+    /**
+     * @var bool
+     */
+    private bool $enableOverrides = true;
+
+    /**
+     * @var int
+     */
+    private int $highlightAffixNumTokens = 4;
+
+    /**
+     * @var string
+     */
+    private string $facetQuery = '';
+
+    /**
+     * @var array
+     */
+    private array $includeFields = [];
+
+    /**
+     * @var array
+     */
+    private array $excludeFields = [];
+
+    /**
+     * @var array
+     */
+    private array $highlightFields = [];
+
+    /**
+     * @var array
+     */
+    private array $highlightFullFields = [];
+
+    /**
+     * @var array
+     */
+    private array $pinnedHits = [];
+
+    /**
+     * @var array
+     */
+    private array $hiddenHits = [];
+
+    /**
      * TypesenseEngine constructor.
      *
      * @param Typesense $typesense
@@ -141,13 +221,20 @@ class TypesenseEngine extends Engine
     private function buildSearchParams(Builder $builder, int $page, int | null $perPage): array
     {
         $params = [
-            'q'                   => $builder->query,
-            'query_by'            => implode(',', $builder->model->typesenseQueryBy()),
-            'filter_by'           => $this->filters($builder),
-            'per_page'            => $perPage,
-            'page'                => $page,
-            'highlight_start_tag' => $this->startTag,
-            'highlight_end_tag'   => $this->endTag,
+            'q'                          => $builder->query,
+            'query_by'                   => implode(',', $builder->model->typesenseQueryBy()),
+            'filter_by'                  => $this->filters($builder),
+            'per_page'                   => $perPage,
+            'page'                       => $page,
+            'highlight_start_tag'        => $this->startTag,
+            'highlight_end_tag'          => $this->endTag,
+            'snippet_threshold'          => $this->snippetThreshold,
+            'exhaustive_search'          => $this->exhaustiveSearch,
+            'use_cache'                  => $this->useCache,
+            'cache_ttl'                  => $this->cacheTtl,
+            'prioritize_exact_match'     => $this->prioritizeExactMatch,
+            'enable_overrides'           => $this->enableOverrides,
+            'highlight_affix_num_tokens' => $this->highlightAffixNumTokens,
         ];
 
         if ($this->limitHits > 0) {
@@ -157,6 +244,39 @@ class TypesenseEngine extends Engine
         if (!empty($this->groupBy)) {
             $params['group_by'] = implode(',', $this->groupBy);
             $params['group_limit'] = $this->groupByLimit;
+        }
+
+        if (!empty($this->facetBy)) {
+            $params['facet_by'] = implode(',', $this->facetBy);
+            $params['max_facet_values'] = $this->maxFacetValues;
+        }
+
+        if (!empty($this->facetQuery)) {
+            $params['facet_query'] = $this->facetQuery;
+        }
+
+        if (!empty($this->includeFields)) {
+            $params['include_fields'] = implode(',', $this->includeFields);
+        }
+
+        if (!empty($this->excludeFields)) {
+            $params['exclude_fields'] = implode(',', $this->excludeFields);
+        }
+
+        if (!empty($this->highlightFields)) {
+            $params['highlight_fields'] = implode(',', $this->highlightFields);
+        }
+
+        if (!empty($this->highlightFullFields)) {
+            $params['highlight_full_fields'] = implode(',', $this->highlightFullFields);
+        }
+
+        if (!empty($this->pinnedHits)) {
+            $params['pinned_hits'] = implode(',', $this->pinnedHits);
+        }
+
+        if (!empty($this->hiddenHits)) {
+            $params['hidden_hits'] = implode(',', $this->hiddenHits);
         }
 
         if (!empty($this->locationOrderBy)) {
@@ -451,6 +571,239 @@ class TypesenseEngine extends Engine
     public function limitHits(int $limitHits): static
     {
         $this->limitHits = $limitHits;
+
+        return $this;
+    }
+
+    /**
+     * A list of fields that will be used for faceting your results on. Separate multiple fields with a comma.
+     *
+     * @param mixed $facetBy
+     *
+     * @return $this
+     */
+    public function facetBy(array $facetBy): static
+    {
+        $this->facetBy = $facetBy;
+
+        return $this;
+    }
+
+    /**
+     * Maximum number of facet values to be returned.
+     *
+     * @param int $maxFacetValues
+     *
+     * @return $this
+     */
+    public function setMaxFacetValues(int $maxFacetValues): static
+    {
+        $this->maxFacetValues = $maxFacetValues;
+
+        return $this;
+    }
+
+    /**
+     * Facet values that are returned can now be filtered via this parameter.
+     *
+     * The matching facet text is also highlighted. For example, when faceting by category,
+     * you can set facet_query=category:shoe to return only facet values that contain the prefix "shoe".
+     *
+     * @param string $facetQuery
+     *
+     * @return $this
+     */
+    public function facetQuery(string $facetQuery): static
+    {
+        $this->facetQuery = $facetQuery;
+
+        return $this;
+    }
+
+    /**
+     * Comma-separated list of fields from the document to include in the search result.
+     *
+     * @param mixed $includeFields
+     *
+     * @return $this
+     */
+    public function setIncludeFields(array $includeFields): static
+    {
+        $this->includeFields = $includeFields;
+
+        return $this;
+    }
+
+    /**
+     * Comma-separated list of fields from the document to exclude in the search result.
+     *
+     * @param mixed $excludeFields
+     *
+     * @return $this
+     */
+    public function setExcludeFields(array $excludeFields): static
+    {
+        $this->excludeFields = $excludeFields;
+
+        return $this;
+    }
+
+    /**
+     * Comma separated list of fields that should be highlighted with snippetting.
+     *
+     * You can use this parameter to highlight fields that you don't query for, as well.
+     *
+     * @param mixed $highlightFields
+     *
+     * @return $this
+     */
+    public function setHighlightFields(array $highlightFields): static
+    {
+        $this->highlightFields = $highlightFields;
+
+        return $this;
+    }
+
+    /**
+     * A list of records to unconditionally include in the search results at specific positions.
+     *
+     * @param mixed $pinnedHits
+     *
+     * @return $this
+     */
+    public function setPinnedHits(array $pinnedHits): static
+    {
+        $this->pinnedHits = $pinnedHits;
+
+        return $this;
+    }
+
+    /**
+     * A list of records to unconditionally hide from search results.
+     *
+     * @param mixed $hiddenHits
+     *
+     * @return $this
+     */
+    public function setHiddenHits(array $hiddenHits): static
+    {
+        $this->hiddenHits = $hiddenHits;
+
+        return $this;
+    }
+
+    /**
+     * Comma separated list of fields which should be highlighted fully without snippeting.
+     *
+     * @param mixed $highlightFullFields
+     *
+     * @return $this
+     */
+    public function setHighlightFullFields(array $highlightFullFields): static
+    {
+        $this->highlightFullFields = $highlightFullFields;
+
+        return $this;
+    }
+
+    /**
+     * The number of tokens that should surround the highlighted text on each side.
+     *
+     * This controls the length of the snippet.
+     *
+     * @param int $highlightAffixNumTokens
+     *
+     * @return $this
+     */
+    public function setHighlightAffixNumTokens(int $highlightAffixNumTokens): static
+    {
+        $this->highlightAffixNumTokens = $highlightAffixNumTokens;
+
+        return $this;
+    }
+
+    /**
+     * Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion.
+     *
+     * @param int $snippetThreshold
+     *
+     * @return $this
+     */
+    public function setSnippetThreshold(int $snippetThreshold): static
+    {
+        $this->snippetThreshold = $snippetThreshold;
+
+        return $this;
+    }
+
+    /**
+     * Setting this to true will make Typesense consider all variations of prefixes and typo corrections of the words
+     *
+     * in the query exhaustively, without stopping early when enough results are found.
+     *
+     * @param bool $exhaustiveSearch
+     *
+     * @return $this
+     */
+    public function setExhaustiveSearch(bool $exhaustiveSearch): static
+    {
+        $this->exhaustiveSearch = $exhaustiveSearch;
+
+        return $this;
+    }
+
+    /**
+     * Enable server side caching of search query results. By default, caching is disabled.
+     *
+     * @param bool $useCache
+     *
+     * @return $this
+     */
+    public function setUseCache(bool $useCache): static
+    {
+        $this->useCache = $useCache;
+
+        return $this;
+    }
+
+    /**
+     * The duration (in seconds) that determines how long the search query is cached.
+     *
+     * @param int $cacheTtl
+     *
+     * @return $this
+     */
+    public function setCacheTtl(int $cacheTtl): static
+    {
+        $this->cacheTtl = $cacheTtl;
+
+        return $this;
+    }
+
+    /**
+     * By default, Typesense prioritizes documents whose field value matches exactly with the query.
+     *
+     * @param bool $prioritizeExactMatch
+     *
+     * @return $this
+     */
+    public function setPrioritizeExactMatch(bool $prioritizeExactMatch): static
+    {
+        $this->prioritizeExactMatch = $prioritizeExactMatch;
+
+        return $this;
+    }
+
+    /**
+     * If you have some overrides defined but want to disable all of them for a particular search query
+     *
+     * @param bool $enableOverrides
+     *
+     * @return $this
+     */
+    public function enableOverrides(bool $enableOverrides): static
+    {
+        $this->enableOverrides = $enableOverrides;
 
         return $this;
     }
