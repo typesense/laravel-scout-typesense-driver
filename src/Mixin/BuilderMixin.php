@@ -121,18 +121,18 @@ class BuilderMixin
         };
     }
 
-	/**
-	 * @param bool $exhaustiveSearch
-	 *
-	 * @return Closure
-	 */
-	public function exhaustiveSearch(): Closure
-	{
-		return function (bool $exhaustiveSearch) {
-			$this->engine()
-				->exhaustiveSearch($exhaustiveSearch);
+    /**
+     * @param bool $exhaustiveSearch
+     *
+     * @return Closure
+     */
+    public function exhaustiveSearch(): Closure
+    {
+        return function (bool $exhaustiveSearch) {
+            $this->engine()
+                ->exhaustiveSearch($exhaustiveSearch);
 
-			return $this;
-		};
-	}
+            return $this;
+        };
+    }
 }
