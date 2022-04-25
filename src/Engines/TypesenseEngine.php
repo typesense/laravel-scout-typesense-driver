@@ -57,6 +57,11 @@ class TypesenseEngine extends Engine
      */
     private array $locationOrderBy = [];
 
+	/**
+	 * @var bool
+	 */
+	private bool $exhaustiveSearch = false;
+
     /**
      * TypesenseEngine constructor.
      *
@@ -148,6 +153,7 @@ class TypesenseEngine extends Engine
             'page'                => $page,
             'highlight_start_tag' => $this->startTag,
             'highlight_end_tag'   => $this->endTag,
+			'exhaustive_search'   => $this->exhaustiveSearch,
         ];
 
         if ($this->limitHits > 0) {
@@ -476,6 +482,20 @@ class TypesenseEngine extends Engine
 
         return $this;
     }
+
+	/**
+	 * Setting this to true will make Typesense consider all variations of prefixes and typo corrections of the words in the query exhaustively.
+	 *
+	 * @param bool $exhaustiveSearch
+	 *
+	 * @return $this
+	 */
+	public function exhaustiveSearch(bool $exhaustiveSearch): static
+	{
+		$this->exhaustiveSearch = $exhaustiveSearch;
+
+		return $this;
+	}
 
     /**
      * @param string $name
