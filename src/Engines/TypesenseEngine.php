@@ -240,7 +240,7 @@ class TypesenseEngine extends Engine
      */
     protected function filters(Builder $builder): string
     {
-        return collect($builder->wheres)
+        return collect(array_merge($builder->wheres, $builder->whereIns))
           ->map([
               $this,
               'parseFilters',
