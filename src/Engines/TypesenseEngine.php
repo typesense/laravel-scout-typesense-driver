@@ -276,7 +276,7 @@ class TypesenseEngine extends Engine
     public function parseWhereFilter(array|string $value, string $key): string
     {
         if (is_array($value)) {
-			return sprintf('%s:%s', $key, implode('', $value));
+            return sprintf('%s:%s', $key, implode('', $value));
         }
 
         return sprintf('%s:=%s', $key, $value);
