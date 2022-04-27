@@ -246,32 +246,54 @@ class TypesenseEngine extends Engine
      */
     protected function filters(Builder $builder): string
     {
-        return collect(array_merge($builder->wheres, $builder->whereIns))
-          ->map([
-              $this,
-              'parseFilters',
-          ])
-          ->values()
-          ->implode(' && ');
+        $whereFilter = collect($builder->wheres)
+            ->map([
+                $this,
+                'parseWhereFilter',
+            ])
+            ->values()
+            ->implode(' && ');
+
+        $whereInFilter = collect($builder->whereIns)
+            ->map([
+                $this,
+                'parseWhereInFilter',
+            ])
+            ->values()
+            ->implode(' && ');
+
+        return $whereFilter . $whereInFilter;
     }
 
     /**
-     * Parse typesense filters.
+     * Parse typesense where filter.
      *
      * @param array|string $value
      * @param string       $key
      *
      * @return string
      */
-    public function parseFilters(array|string $value, string $key): string
+    public function parseWhereFilter(array|string $value, string $key): string
     {
         if (is_array($value)) {
-            return sprintf('%s:=%s', $key, '['. implode(', ', $value).']');
+            return sprintf('%s=%s', $key, implode(', ', $value));
         }
 
         return sprintf('%s:=%s', $key, $value);
     }
 
+    /**
+     * Parse typesense  whereIn filter.
+     *
+     * @param array  $value
+     * @param string $key
+     *
+     * @return string
+     */
+    public function parseWhereInFilter(array $value, string $key): string
+    {
+        return sprintf('%s:=%s', $key, '['. implode(', ', $value).']');
+    }
 
     /**
      * @param mixed $results
