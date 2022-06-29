@@ -368,8 +368,8 @@ class BuilderMixin
      */
     public function searchMulti(): Closure
     {
-        return function (array $builders) {
-            $this->engine()->searchMulti($builders);
+        return function (array $searchRequests) {
+            $this->engine()->searchMulti($searchRequests);
 
             return $this;
         };
