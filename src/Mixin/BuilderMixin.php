@@ -362,7 +362,7 @@ class BuilderMixin
     }
 
     /**
-     * @param array $builders
+     * @param array $searchRequests
      *
      * @return \Closure
      */
