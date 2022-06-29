@@ -138,6 +138,11 @@ class TypesenseEngine extends Engine
     private array $hiddenHits = [];
 
     /**
+     * @var array
+     */
+    private array $optionsMulti = [];
+
+    /**
      * TypesenseEngine constructor.
      *
      * @param Typesense $typesense
@@ -342,13 +347,18 @@ class TypesenseEngine extends Engine
      */
     protected function performSearch(Builder $builder, array $options = []): mixed
     {
-        $documents = $this->typesense->getCollectionIndex($builder->model)
-                                     ->getDocuments();
-        if ($builder->callback) {
-            return call_user_func($builder->callback, $documents, $builder->query, $options);
-        }
+        if(!$this->optionsMulti)
+        {
+            $documents = $this->typesense->getCollectionIndex($builder->model)
+                ->getDocuments();
+            if ($builder->callback) {
+                return call_user_func($builder->callback, $documents, $builder->query, $options);
+            }
 
-        return $documents->search($options);
+            return $documents->search($options);
+        } else {
+            return $this->typesense->multiSearch(["searches" => $this->optionsMulti], $options);
+        }
     }
 
     /**
@@ -804,6 +814,20 @@ class TypesenseEngine extends Engine
     public function enableOverrides(bool $enableOverrides): static
     {
         $this->enableOverrides = $enableOverrides;
+
+        return $this;
+    }
+
+    /**
+     * If you want to search multi queries in the same call
+     *
+     * @param array $optionsMulti
+     *
+     * @return $this
+     */
+    public function searchMulti(array $optionsMulti): static
+    {
+        $this->optionsMulti = $optionsMulti;
 
         return $this;
     }
