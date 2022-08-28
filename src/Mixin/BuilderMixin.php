@@ -291,7 +291,7 @@ class BuilderMixin
      *
      * @return \Closure
      */
-    public function setExhaustiveSearch(): Closure
+    public function exhaustiveSearch(): Closure
     {
         return function (bool $exhaustiveSearch) {
             $this->engine()
