@@ -250,19 +250,17 @@ class TypesenseEngine extends Engine
             ->map([
                 $this,
                 'parseWhereFilter',
-            ])
-            ->values()
-            ->implode(' && ');
+            ]);
 
         $whereInFilter = collect($builder->whereIns)
             ->map([
                 $this,
                 'parseWhereInFilter',
-            ])
-            ->values()
-            ->implode(' && ');
+            ]);
 
-		return $whereFilter . ' && ' . $whereInFilter;
+        $combinedFilter = $whereFilter->merge($whereFilter);
+
+		return $combinedFilter->values()->implode(' && ');
     }
 
     /**
