@@ -258,9 +258,9 @@ class TypesenseEngine extends Engine
                 'parseWhereInFilter',
             ]);
 
-        $combinedFilter = $whereFilter->merge($whereFilter);
+        $combinedFilter = $whereFilter->merge($whereInFilter);
 
-		return $combinedFilter->values()->implode(' && ');
+	return $combinedFilter->values()->implode(' && ');
     }
 
     /**
