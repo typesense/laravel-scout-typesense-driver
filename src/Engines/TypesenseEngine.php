@@ -262,7 +262,7 @@ class TypesenseEngine extends Engine
             ->values()
             ->implode(' && ');
 
-		return $whereFilter . ' && ' . $whereInFilter;
+        return $whereFilter . ' && ' . $whereInFilter;
     }
 
     /**
