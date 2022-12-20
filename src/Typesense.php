@@ -182,7 +182,6 @@ class Typesense
      */
     public function deleteCollection(string $collectionName): array
     {
-        $index = $this->client->getCollections()->{$collectionName};
-        return $index->delete();
+        return $this->client->getCollections()->{$collectionName}->delete();
     }
 }
