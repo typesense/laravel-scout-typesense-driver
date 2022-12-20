@@ -2,7 +2,7 @@
     <img src="https://banners.beyondco.de/Laravel%20Scout%20Driver%20For%20Typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-scout-typesense-driver&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=75px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
 </p>
 
-This package makes it easy to add full text search support to your models with Laravel 7.\* to 8.\*. 
+This package makes it easy to add full text search support to your models with Laravel 7.\* to 9.\*. 
 
 <!--
 
