@@ -295,7 +295,7 @@ class BuilderMixin
     {
         return function (bool $exhaustiveSearch) {
             $this->engine()
-                ->setExhaustiveSearch($exhaustiveSearch);
+                ->exhaustiveSearch($exhaustiveSearch);
 
             return $this;
         };
