@@ -184,4 +184,17 @@ class Typesense
     {
         return $this->client->getCollections()->{$collectionName}->delete();
     }
+
+    /**
+     * @param array $searchRequests
+     * @param array $commonSearchParams
+     *
+     * @return array
+     * @throws \Typesense\Exceptions\TypesenseClientError
+     * @throws \Http\Client\Exception
+     */
+    public function multiSearch(array $searchRequests, array $commonSearchParams): array
+    {
+        return $this->client->multiSearch->perform($searchRequests, $commonSearchParams);
+    }
 }

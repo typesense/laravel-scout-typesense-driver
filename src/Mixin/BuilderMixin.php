@@ -122,15 +122,254 @@ class BuilderMixin
     }
 
     /**
+     * @param array $facetBy
+     *
+     * @return \Closure
+     */
+    public function facetBy(): Closure
+    {
+        return function (array $facetBy) {
+            $this->engine()
+                ->facetBy($facetBy);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param int $maxFacetValues
+     *
+     * @return \Closure
+     */
+    public function setMaxFacetValues(): Closure
+    {
+        return function (int $maxFacetValues) {
+            $this->engine()
+                ->setMaxFacetValues($maxFacetValues);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param string $facetQuery
+     *
+     * @return \Closure
+     */
+    public function facetQuery(): Closure
+    {
+        return function (string $facetQuery) {
+            $this->engine()
+                ->facetQuery($facetQuery);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $includeFields
+     *
+     * @return \Closure
+     */
+    public function setIncludeFields(): Closure
+    {
+        return function (array $includeFields) {
+            $this->engine()
+                ->setIncludeFields($includeFields);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $excludeFields
+     *
+     * @return \Closure
+     */
+    public function setExcludeFields(): Closure
+    {
+        return function (array $excludeFields) {
+            $this->engine()
+                ->setExcludeFields($excludeFields);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $highlightFields
+     *
+     * @return \Closure
+     */
+    public function setHighlightFields(): Closure
+    {
+        return function (array $highlightFields) {
+            $this->engine()
+                ->setHighlightFields($highlightFields);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $pinnedHits
+     *
+     * @return \Closure
+     */
+    public function setPinnedHits(): Closure
+    {
+        return function (array $pinnedHits) {
+            $this->engine()
+                ->setPinnedHits($pinnedHits);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $hiddenHits
+     *
+     * @return \Closure
+     */
+    public function setHiddenHits(): Closure
+    {
+        return function (array $hiddenHits) {
+            $this->engine()
+                ->setHiddenHits($hiddenHits);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $highlightFullFields
+     *
+     * @return \Closure
+     */
+    public function setHighlightFullFields(): Closure
+    {
+        return function (array $highlightFullFields) {
+            $this->engine()
+                ->setHighlightFullFields($highlightFullFields);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param int $highlightAffixNumTokens
+     *
+     * @return \Closure
+     */
+    public function setHighlightAffixNumTokens(): Closure
+    {
+        return function (int $highlightAffixNumTokens) {
+            $this->engine()
+                ->setHighlightAffixNumTokens($highlightAffixNumTokens);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param int $snippetThreshold
+     *
+     * @return \Closure
+     */
+    public function setSnippetThreshold(): Closure
+    {
+        return function (int $snippetThreshold) {
+            $this->engine()
+                ->setSnippetThreshold($snippetThreshold);
+
+            return $this;
+        };
+    }
+
+    /**
      * @param bool $exhaustiveSearch
      *
-     * @return Closure
+     * @return \Closure
      */
     public function exhaustiveSearch(): Closure
     {
         return function (bool $exhaustiveSearch) {
             $this->engine()
                 ->exhaustiveSearch($exhaustiveSearch);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param bool $useCache
+     *
+     * @return \Closure
+     */
+    public function setUseCache(): Closure
+    {
+        return function (bool $useCache) {
+            $this->engine()
+                ->setUseCache($useCache);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param int $cacheTtl
+     *
+     * @return \Closure
+     */
+    public function setCacheTtl(): Closure
+    {
+        return function (int $cacheTtl) {
+            $this->engine()
+                ->setCacheTtl($cacheTtl);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param bool $prioritizeExactMatch
+     *
+     * @return \Closure
+     */
+    public function setPrioritizeExactMatch(): Closure
+    {
+        return function (bool $prioritizeExactMatch) {
+            $this->engine()
+                ->setPrioritizeExactMatch($prioritizeExactMatch);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param bool $enableOverrides
+     *
+     * @return \Closure
+     */
+    public function enableOverrides(): Closure
+    {
+        return function (bool $enableOverrides) {
+            $this->engine()
+                ->enableOverrides($enableOverrides);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param array $searchRequests
+     *
+     * @return \Closure
+     */
+    public function searchMulti(): Closure
+    {
+        return function (array $searchRequests) {
+            $this->engine()->searchMulti($searchRequests);
 
             return $this;
         };
