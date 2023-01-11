@@ -2,12 +2,17 @@
 
 namespace Typesense\LaravelTypesense;
 
+use Illuminate\Support\Facades\Config;
+use Laravel\Scout\EngineManager;
 use Typesense\Exceptions\TypesenseClientError;
 use Typesense\LaravelTypesense\Classes\TypesenseDocumentIndexResponse;
 use Typesense\Client;
 use Typesense\Collection;
 use Typesense\Document;
+use Laravel\Scout\Builder;
+use Typesense\LaravelTypesense\Mixin\BuilderMixin;
 use Typesense\Exceptions\ObjectNotFound;
+use Typesense\LaravelTypesense\Engines\TypesenseEngine;
 
 /**
  * Class Typesense
@@ -40,6 +45,25 @@ class Typesense
     public function getClient(): Client
     {
         return $this->client;
+    }
+
+    /**
+     * @param $key
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \ReflectionException
+     * @throws \Typesense\Exceptions\ConfigError
+     */
+    public function setScopedApiKey($key): void
+    {
+        $config = Config::get('scout.typesense');
+        $config['api_key'] = $key;
+        $client = new Client($config);
+
+        app()[EngineManager::class]->extend('typesense', static function () use ($client) {
+            return new TypesenseEngine(new Typesense($client));
+        });
+        Builder::mixin(app()->make(BuilderMixin::class));
     }
 
     /**
