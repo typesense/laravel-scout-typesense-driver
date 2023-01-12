@@ -187,6 +187,52 @@ $todos = Todo::where('created_at', '<', now())->get();
 $todos->searchable();
 ```
 
+### Multi Search
+You can send multiple search requests in a single HTTP request, using the Multi-Search feature.
+```php
+$searchRequests = [
+    [
+      'collection' => 'todo',
+      'q' => 'todo'
+    ],
+    [
+      'collection' => 'todo',
+      'q' => 'foo'
+    ]
+];
+
+Todo::searchMulti($searchRequests)->paginateRaw();
+```
+
+### Generate Scoped Search Key
+
+You can generate scoped search API keys that have embedded search parameters in them. This is useful in a few different scenarios:
+1. You can index data from multiple users/customers in a single Typesense collection (aka multi-tenancy) and create scoped search keys with embedded `filter_by` parameters that only allow users access to their own subset of data.
+2. You can embed any [search parameters](https://typesense.org/docs/0.23.1/api/search.html#search-parameters) (for eg: `exclude_fields` or `limit_hits`) to prevent users from being able to modify it client-side.
+
+When you use these scoped search keys in a search API call, the parameters you embedded in them will be automatically applied by Typesense and users will not be able to override them.
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Typesense\LaravelTypesense\Concerns\HasScopedApiKey;
+use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
+
+class Todo extends Model implements TypesenseDocument
+{
+    use Searchable, HasScopedApiKey;
+}
+```
+
+#### Usage
+```php
+Todo::setScopedApiKey('xyz')->search('todo')->get();
+```
+
 ## Migrating from devloopsnet/laravel-typesense
 - Replace `devloopsnet/laravel-typesense` in your composer.json requirements with `typesense/laravel-scout-typesense-driver`
 - The Scout driver is now called `typesense`, instead of `typesensesearch`. This should be reflected by setting the SCOUT_DRIVER env var to `typesense`,
