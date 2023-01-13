@@ -459,8 +459,15 @@ class TypesenseEngine extends Engine
             return $model->newCollection();
         }
 
-        $objectIds = collect($results['hits'])
-            ->pluck('document.id')
+        $hits = isset($results['grouped_hits']) && !empty($results['grouped_hits']) ?
+            $results['grouped_hits'] :
+            $results['hits'];
+        $pluck = isset($results['grouped_hits']) && !empty($results['grouped_hits']) ?
+            'hits.0.document.id' :
+            'document.id';
+
+        $objectIds = collect($hits)
+            ->pluck($pluck)
             ->values()
             ->all();
 
