@@ -162,14 +162,18 @@ class TypesenseEngine extends Engine
      */
     public function update($models): void
     {
-        $collection = $this->typesense->getCollectionIndex($models->first());
+        $changes = $models->first()->getDirty();
+        $searchableArray = $models->first()->toSearchableArray();
+        if (!empty(array_intersect(array_keys($changes), array_keys($searchableArray)))) {
+            $collection = $this->typesense->getCollectionIndex($models->first());
 
-        if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
-            $models->each->pushSoftDeleteMetadata();
+            if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
+                $models->each->pushSoftDeleteMetadata();
+            }
+
+            $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+                ->toArray());
         }
-
-        $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
-            ->toArray());
     }
 
     /**
