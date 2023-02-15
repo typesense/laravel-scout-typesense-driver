@@ -403,9 +403,9 @@ class TypesenseEngine extends Engine
             ->values()
             ->implode(' && ');
 
-        return $whereFilter . (
-            ($whereFilter !== '' && $whereInFilter !== '') ? ' && ' : ''
-            ) . $whereInFilter;
+        return collect([$whereFilter, $whereInFilter])
+            ->filter(fn($filter) => $filter !== '')
+            ->implode(' && ');
     }
 
     /**
