@@ -1,5 +1,5 @@
 <?php
 
 test('search', function () {
-    expect(true)->toBeTrue();
+    expect(1)->toBeTrue();
 });
