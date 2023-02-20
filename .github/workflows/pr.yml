@@ -31,4 +31,4 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=ext-imagick
 
       - name: Run Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/phpunit tests

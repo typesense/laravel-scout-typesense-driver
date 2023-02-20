@@ -28,6 +28,11 @@
       "Typesense\\LaravelTypesense\\": "src/"
     }
   },
+  "autoload-dev": {
+        "psr-4": {
+            "Typesense\\LaravelTypesense\\Tests\\": "tests/"
+        }
+    },
   "extra": {
     "laravel": {
       "providers": [
@@ -47,14 +52,16 @@
     "illuminate/pagination": "^7.0|^8.0|^9.0",
     "illuminate/queue": "^7.0|^8.0|^9.0",
     "illuminate/support": "^7.0|^8.0|^9.0",
-    "typesense/typesense-php": "^4.0"
+    "typesense/typesense-php": "^4.0",
+    "symfony/http-client": "^5.4"
   },
   "config": {
     "platform": {
       "php": "8.0"
     },
     "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
     }
   },
   "suggest": {
@@ -63,6 +70,6 @@
   "require-dev": {
     "phpunit/phpunit": "^8.0|^9.0",
     "mockery/mockery": "^1.3",
-    "pestphp/pest": "^1.22"
+    "orchestra/testbench": "^6.17|^7.0|^8.0"
   }
 }
