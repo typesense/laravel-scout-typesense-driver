@@ -25,14 +25,10 @@
   "minimum-stability": "stable",
   "autoload": {
     "psr-4": {
-      "Typesense\\LaravelTypesense\\": "src/"
+      "Typesense\\LaravelTypesense\\": "src/",
+      "Typesense\\LaravelTypesense\\Tests\\": "tests/"
     }
   },
-  "autoload-dev": {
-        "psr-4": {
-            "Typesense\\LaravelTypesense\\Tests\\": "tests/"
-        }
-    },
   "extra": {
     "laravel": {
       "providers": [
