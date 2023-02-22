@@ -28,7 +28,6 @@ jobs:
             ${{ runner.os }}-php-
       - name: Install Dependencies
         run: |
-           composer require "illuminate/contracts=^${{ matrix.laravel }}" --no-update
            composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run Tests
