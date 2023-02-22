@@ -6,13 +6,11 @@ use Illuminate\Foundation\Auth\User as Model;
 use Laravel\Scout\Searchable;
 use Typesense\LaravelTypesense\Interfaces\TypesenseDocument;
 
-class UserModel extends Model implements TypesenseDocument
+class SearchableUserModel extends Model implements TypesenseDocument
 {
     use Searchable;
 
     protected $fillable = ['email', 'name', 'password'];
-
-    public $timestamps = false;
 
     protected $table = 'users';
 

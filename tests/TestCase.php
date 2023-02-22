@@ -2,9 +2,9 @@
 
 namespace Typesense\LaravelTypesense\Tests;
 
+use Laravel\Scout\EngineManager;
 use Illuminate\Foundation\Testing\WithFaker;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Typesense\LaravelTypesense\Tests\Fixtures\UserModel;
 use Typesense\LaravelTypesense\TypesenseServiceProvider;
 
 abstract class TestCase extends Orchestra
@@ -13,52 +13,22 @@ abstract class TestCase extends Orchestra
 
     protected function getPackageProviders($app)
     {
+        $app->singleton(EngineManager::class, function ($app) {
+            return new EngineManager($app);
+        });
+
         return [TypesenseServiceProvider::class];
     }
 
     protected function defineEnvironment($app)
     {
-        $app->make('config')->set('scout.driver', 'typesense');
-        $app->make('config')->set('scout.typesense',
-            [
-                'api_key'         => 'xyz',
-                'nodes'           => [
-                    [
-                        'host'     => 'localhost',
-                        'port'     => '8108',
-                        'path'     => '',
-                        'protocol' => 'http',
-                    ],
-                ],
-                'nearest_node'    => [
-                    'host'     => 'localhost',
-                    'port'     => '8108',
-                    'path'     => '',
-                    'protocol' => 'http',
-                ],
-                'connection_timeout_seconds'   => 2,
-                'healthcheck_interval_seconds' => 30,
-                'num_retries'                  => 3,
-                'retry_interval_seconds'       => 1,
-            ]
-        );
+        $this->mergeConfigFrom($app, __DIR__.'/../config/scout.php', 'scout');
     }
 
-    protected function defineDatabaseMigrations()
+    private function mergeConfigFrom($app, $path, $key)
     {
-        $this->setUpFaker();
-        $this->loadLaravelMigrations();
+        $config = $app['config']->get($key, []);
 
-        UserModel::create([
-            'name' => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-            'password' => 'asd'
-        ]);
-
-        UserModel::create([
-            'name' => 'Abigail Otwell',
-            'email' => 'abigail@laravel.com',
-            'password' => 'asd'
-        ]);
+        $app['config']->set($key, array_merge(require $path, $config));
     }
 }
