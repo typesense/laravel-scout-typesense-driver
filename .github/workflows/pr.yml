@@ -11,9 +11,13 @@ jobs:
 
     services:
       typesense:
-        image: typesense/typesense:latest
+        image: typesense/typesense:0.24.0
+        restart: on-failure
         ports:
-          - 8108:8108
+          - "8108:8108"
+        volumes:
+          - ./typesense-data:/data
+        command: '--data-dir /data --api-key=xyz --enable-cors'
 
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
@@ -38,6 +42,3 @@ jobs:
 
       - name: Run Tests
         run:  vendor/bin/phpunit --verbose
-        env:
-          TYPESENSE_HOST: localhost
-          TYPESENSE_PORT: 8108
