@@ -30,9 +30,9 @@ jobs:
            composer update --prefer-dist --no-interaction --no-progress
 
       - name: Create Directory
-        run: mkdir /tmp/typesense-data
+        run: mkdir $(pwd)/typesense-data
       - name: Run Docker Container
-        run: docker run -p 8108:8108 -v/tmp/data:/data typesense/typesense:0.24.0 --data-dir /data --api-key=xyz
+        run: docker run -p 8108:8108 -v$(pwd)/typesense-data:/data typesense/typesense:0.24.0 --data-dir /data --api-key=xyz --enable-cors
 
       - name: Run Tests
         run:  vendor/bin/phpunit --verbose
