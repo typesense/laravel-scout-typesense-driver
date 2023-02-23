@@ -14,10 +14,7 @@ jobs:
         image: typesense/typesense:0.24.0
         restart: on-failure
         ports:
-          - "8108:8108"
-        volumes:
-          - ./typesense-data:/data
-        command: '--data-dir /data --api-key=xyz --enable-cors'
+          - 8108:8108
 
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
