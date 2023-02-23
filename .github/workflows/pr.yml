@@ -8,15 +8,6 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
-    services:
-      typesense:
-        image: typesense/typesense:0.24.0
-        ports:
-          - 8108:8108
-        volumes:
-          - ./typesense-data:/data
-
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
 
@@ -37,6 +28,11 @@ jobs:
       - name: Install Dependencies
         run: |
            composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Create Directory
+        run: mkdir /tmp/typesense-data
+      - name: Run Docker Container
+        run: docker run -p 8108:8108 -v/tmp/data:/data typesense/typesense:0.24.0 --data-dir /data --api-key=xyz
 
       - name: Run Tests
         run:  vendor/bin/phpunit --verbose
