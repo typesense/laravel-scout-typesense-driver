@@ -11,6 +11,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+        typesense-version: [0.22.0, 0.23.1, 0.24.0]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,7 +19,10 @@ jobs:
           submodules: 'recursive'
 
       - name: Start Typesense
-        run: docker run -d -p 8108:8108 typesense/typesense:0.24.0 --api-key=xyz
+        uses: jirevwe/typesense-github-action@v1.0.1
+        with:
+          typesense-version: ${{ matrix.typesense-version }}
+          typesense-port: 8108
 
       - name: Composer Validate
         run: composer validate
