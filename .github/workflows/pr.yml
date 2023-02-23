@@ -36,15 +36,17 @@ jobs:
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
+
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: |
             ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install Dependencies
         run: |
            composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run Tests
-        run:  vendor/bin/phpunit --verbose
+        run:  vendor/bin/phpunit tests
