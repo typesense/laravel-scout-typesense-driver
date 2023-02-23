@@ -37,8 +37,6 @@ jobs:
           path: |
             ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
       - name: Install Dependencies
         run: |
            composer update --prefer-dist --no-interaction --no-progress
