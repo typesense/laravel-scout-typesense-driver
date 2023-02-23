@@ -9,6 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    services:
+      typesense:
+        image: typesense/typesense:latest
+        ports:
+          - 8108:8108
+
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
 
@@ -32,3 +38,6 @@ jobs:
 
       - name: Run Tests
         run:  vendor/bin/phpunit --verbose
+        env:
+          TYPESENSE_HOST: localhost
+          TYPESENSE_PORT: 8108
