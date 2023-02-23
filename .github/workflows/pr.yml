@@ -8,8 +8,14 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
 
       - name: Start Typesense
         run: docker run -d -p 8108:8108 typesense/typesense:0.24.0 --api-key=xyz
@@ -25,6 +31,14 @@ jobs:
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
       - name: Install Dependencies
         run: |
            composer update --prefer-dist --no-interaction --no-progress
