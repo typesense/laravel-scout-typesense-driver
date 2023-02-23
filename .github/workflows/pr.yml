@@ -14,6 +14,9 @@ jobs:
         image: typesense/typesense:0.24.0
         ports:
           - 8108:8108
+        volumes:
+          - ./typesense-data:/data
+        command: '--data-dir /data --api-key=xyz --enable-cors'
 
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
