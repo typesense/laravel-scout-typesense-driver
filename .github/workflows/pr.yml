@@ -14,11 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Composer Validate
-        run: composer validate
-
       - name: Start Typesense
         run: docker run -d -p 8108:8108 typesense/typesense:0.24.0 --api-key=xyz
+
+      - name: Composer Validate
+        run: composer validate
 
       - name: Cache Composer Packages
         id: composer-cache
