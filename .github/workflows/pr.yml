@@ -23,6 +23,7 @@ jobs:
         with:
           typesense-version: ${{ matrix.typesense-version }}
           typesense-port: 8108
+          typesense-api-key: xyz
 
       - name: Composer Validate
         run: composer validate
