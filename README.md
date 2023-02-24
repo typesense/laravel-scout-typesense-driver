@@ -201,7 +201,7 @@ $searchRequests = [
     ]
 ];
 
-Todo::searchMulti($searchRequests)->paginateRaw();
+Todo::search('')->searchMulti($searchRequests)->paginateRaw();
 ```
 
 ### Generate Scoped Search Key
