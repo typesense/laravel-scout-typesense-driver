@@ -42,12 +42,12 @@
   "require": {
     "php": "^8.0",
     "laravel/scout": "^8.0|^9.0",
-    "illuminate/bus": "^7.0|^8.0|^9.0",
-    "illuminate/contracts": "^7.0|^8.0|^9.0",
-    "illuminate/database": "^7.0|^8.0|^9.0",
-    "illuminate/pagination": "^7.0|^8.0|^9.0",
-    "illuminate/queue": "^7.0|^8.0|^9.0",
-    "illuminate/support": "^7.0|^8.0|^9.0",
+    "illuminate/bus": "^7.0|^8.0|^9.0|^10.0",
+    "illuminate/contracts": "^7.0|^8.0|^9.0|^10.0",
+    "illuminate/database": "^7.0|^8.0|^9.0|^10.0",
+    "illuminate/pagination": "^7.0|^8.0|^9.0|^10.0",
+    "illuminate/queue": "^7.0|^8.0|^9.0|^10.0",
+    "illuminate/support": "^7.0|^8.0|^9.0|^10.0",
     "typesense/typesense-php": "^4.0",
     "symfony/http-client": "^5.4"
   },
