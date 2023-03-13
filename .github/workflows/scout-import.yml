@@ -18,7 +18,6 @@ jobs:
         env:
           MYSQL_DATABASE: laravel
           MYSQL_USER: test
-          MYSQL_ROOT_PASSWORD: root
           MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
         ports:
           - 33306:3306
