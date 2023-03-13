@@ -1,0 +1,52 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.1
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: default
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD:
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: arayiksmbatyan/scout-import-tests
+          ref: master
+
+      - name: Composer Validate
+        run: composer validate
+
+      - name: Cache Composer Packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+      - name: Install Dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=ext-imagick
+
+      - name: Run Migrations and Seeders
+        run: php artisan migrate --seed
+
+      - name: Run Tests
+        run: php artisan test
