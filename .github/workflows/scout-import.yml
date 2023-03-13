@@ -50,7 +50,7 @@ jobs:
           cp .env.example .env
 
       - name: Run Migrations and Seeders
-        run: php artisan migrate --seed --force
+        run: php artisan migrate --seed
 
       - name: Run Tests
         run: php artisan test
