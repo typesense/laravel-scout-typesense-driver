@@ -46,7 +46,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=ext-imagick
 
       - name: Run Migrations and Seeders
-        run: php artisan migrate --seed
+        run: php artisan migrate --seed --force
 
       - name: Run Tests
         run: php artisan test
