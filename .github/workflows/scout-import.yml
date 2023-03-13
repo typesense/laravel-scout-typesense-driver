@@ -45,6 +45,10 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=ext-imagick
 
+      - name: Prepare Application Environment
+        run: |
+          cp .env.example .env
+
       - name: Run Migrations and Seeders
         run: php artisan migrate --seed --force
 
