@@ -19,7 +19,7 @@ jobs:
           MYSQL_DATABASE: test
           MYSQL_USER: default
           MYSQL_PASSWORD: root
-          MYSQL_ROOT_PASSWORD:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
