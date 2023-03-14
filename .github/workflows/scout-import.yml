@@ -8,6 +8,10 @@ jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      matrix:
+        node-version: [16.x]
+        typesense-version: [0.24.0]
 
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
@@ -29,6 +33,13 @@ jobs:
         with:
           repository: arayiksmbatyan/scout-import-tests
           ref: master
+
+      - name: Start Typesense
+        uses: jirevwe/typesense-github-action@v1.0.1
+        with:
+          typesense-version: ${{ matrix.typesense-version }}
+          typesense-port: 8108
+          typesense-api-key: xyz
 
       - name: Composer Validate
         run: composer validate
