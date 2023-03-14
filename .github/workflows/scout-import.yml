@@ -34,11 +34,6 @@ jobs:
           repository: arayiksmbatyan/scout-import-tests
           ref: master
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
         with:
