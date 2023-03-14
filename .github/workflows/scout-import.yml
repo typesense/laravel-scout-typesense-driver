@@ -29,10 +29,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
-          repository: arayiksmbatyan/scout-import-tests
-          ref: master
+          submodules: 'recursive'
 
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
@@ -40,6 +40,11 @@ jobs:
           typesense-version: ${{ matrix.typesense-version }}
           typesense-port: 8108
           typesense-api-key: xyz
+
+      - uses: actions/checkout@v2
+        with:
+          repository: arayiksmbatyan/scout-import-tests
+          ref: master
 
       - name: Composer Validate
         run: composer validate
