@@ -31,11 +31,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          repository: arayiksmbatyan/scout-import-tests
-          ref: master
-          submodules: 'recursive'
-
+#        with:
+#          repository: arayiksmbatyan/scout-import-tests
+#          ref: master
 
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
@@ -59,12 +57,14 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=ext-imagick
 
-      - name: Prepare Application Environment
-        run: |
-          cp .env.example .env
+#      - name: Prepare Application Environment
+#        run: |
+#          cp .env.example .env
+#
+#      - name: Run Migrations and Seeders
+#        run: php artisan migrate --seed
 
-      - name: Run Migrations and Seeders
-        run: php artisan migrate --seed
-
+#      - name: Run Tests
+#        run: php artisan test
       - name: Run Tests
-        run: php artisan test
+        run:  vendor/bin/phpunit tests
