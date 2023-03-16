@@ -5,18 +5,32 @@ on:
     branches: [master]
 
 jobs:
-  tests:
+  scout-import-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       matrix:
         node-version: [16.x]
         typesense-version: [0.24.0]
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: default
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
+          repository: arayiksmbatyan/scout-import-tests
+          ref: master
 
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
@@ -48,5 +62,12 @@ jobs:
         run: |
            composer update --prefer-dist --no-interaction --no-progress
 
+      - name: Prepare Application Environment
+        run: |
+          cp .env.example .env
+
+      - name: Run Migrations and Seeders
+        run: php artisan migrate --seed
+
       - name: Run Tests
-        run:  vendor/bin/phpunit tests
+        run: php artisan test
