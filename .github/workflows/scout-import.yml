@@ -30,7 +30,6 @@ jobs:
         with:
           repository: arayiksmbatyan/scout-import-tests
           ref: master
-          token: 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
 
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
