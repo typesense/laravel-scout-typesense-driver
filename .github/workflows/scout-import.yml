@@ -12,10 +12,6 @@ jobs:
       matrix:
         node-version: [16.x]
         typesense-version: [0.24.0]
-
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.1
-
     services:
       mysql:
         image: mysql:8.0
@@ -34,6 +30,7 @@ jobs:
         with:
           repository: arayiksmbatyan/scout-import-tests
           ref: master
+          token: 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
 
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
