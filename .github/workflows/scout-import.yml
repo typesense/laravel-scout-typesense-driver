@@ -51,7 +51,7 @@ jobs:
 
       - name: Create MySQL Database
         run: |
-          sudo mysql -e "CREATE USER 'default'@'localhost' IDENTIFIED WITH authentication_plugin BY 'root';"
+          sudo mysql -e "CREATE USER 'default'@'localhost' IDENTIFIED BY 'root';"
           sudo mysql -e "CREATE DATABASE test;"
           sudo mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
 
