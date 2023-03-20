@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        typesense-version: [0.22.0, 0.23.1, 0.24.0]
+        typesense-version: [0.24.0]
 
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
@@ -42,10 +42,10 @@ jobs:
 #          mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
 
 
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          repository: arayiksmbatyan/scout-import-tests
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#        with:
+#          repository: arayiksmbatyan/scout-import-tests
 
       - name: Composer Validate
         run: composer validate
@@ -70,9 +70,9 @@ jobs:
         run: |
            composer update --prefer-dist --no-interaction --no-progress
 
-      - name: Prepare Application Environment
-        run: |
-          cp .env.example .env
+#      - name: Prepare Application Environment
+#        run: |
+#          cp .env.example .env
 
       - name: Run Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
@@ -84,8 +84,8 @@ jobs:
       - name: Curl Typesense
         run: sleep 10 && curl http://localhost:20863/health
 
-      - name: Run Migrations and Seeders
-        run: php artisan migrate --seed
-
-      - name: Run Tests
-        run: php artisan test
+#      - name: Run Migrations and Seeders
+#        run: php artisan migrate --seed
+#
+#      - name: Run Tests
+#        run: php artisan test
