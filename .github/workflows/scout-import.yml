@@ -13,8 +13,8 @@ jobs:
         node-version: [16.x]
         typesense-version: [0.24.0]
 
-    container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.1
+#    container:
+#      image: kirschbaumdevelopment/laravel-test-runner:8.1
 
     services:
       mysql:
