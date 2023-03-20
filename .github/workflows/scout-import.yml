@@ -51,6 +51,7 @@ jobs:
 
       - name: Create MySQL Database
         run: |
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
           sudo mysql -e "CREATE USER 'default'@'localhost' IDENTIFIED BY 'root';"
           sudo mysql -e "CREATE DATABASE test;"
           sudo mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
