@@ -33,7 +33,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: arayiksmbatyan/scout-import-tests
-          token: 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
 
       - name: Run Typesense GitHub Action
         uses: jirevwe/typesense-github-action@v1.0.1
