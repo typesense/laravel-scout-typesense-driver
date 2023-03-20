@@ -29,19 +29,26 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Start Typesense
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          repository: arayiksmbatyan/scout-import-tests
+          token: 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
+
+      - name: Run Typesense GitHub Action
         uses: jirevwe/typesense-github-action@v1.0.1
         with:
           typesense-version: ${{ matrix.typesense-version }}
           typesense-port: 8108
           typesense-api-key: xyz
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          repository: arayiksmbatyan/scout-import-tests
-          ref: master
-          submodules: 'recursive'
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#        with:
+#          repository: arayiksmbatyan/scout-import-tests
+#          ref: master
+#          token: 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
+#          submodules: 'recursive'
 
       - name: Composer Validate
         run: composer validate
@@ -75,3 +82,6 @@ jobs:
 
       - name: Run Tests
         run: php artisan test
+
+#      - name: Run Tests
+#        run:  vendor/bin/phpunit tests
