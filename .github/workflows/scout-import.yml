@@ -86,7 +86,7 @@ jobs:
           typesense-api-key: xyz
 
       - name: Curl Typesense
-        run: sleep 10 && curl http://localhost:20863/health
+        run: sleep 10 && curl http://localhost:8108/health
 
 #      - name: Run Migrations and Seeders
 #        run: php artisan migrate --seed
