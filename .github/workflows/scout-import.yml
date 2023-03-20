@@ -44,15 +44,15 @@ jobs:
 #          submodules: 'recursive'
       - name: Install MySQL
         run: |
-          apt-get update
-          apt-get install mysql-server
+          sudo apt-get update
+          sudo apt-get install mysql-server
       - name: Start MySQL Server
-        run: service mysql start
+        run: sudo service mysql start
 
       - name: Create MySQL Database
         run: |
-          mysql -e "CREATE DATABASE test;"
-          mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
+          sudo mysql -e "CREATE DATABASE test;"
+          sudo mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
 
 
       - name: Checkout repository
