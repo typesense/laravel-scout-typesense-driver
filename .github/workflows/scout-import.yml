@@ -10,29 +10,37 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [16.x]
+#        node-version: [16.x]
         typesense-version: [0.24.0]
 
 #    container:
 #      image: kirschbaumdevelopment/laravel-test-runner:8.1
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: test
-          MYSQL_USER: default
-          MYSQL_PASSWORD: root
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+#    services:
+#      mysql:
+#        image: mysql:8.0
+#        env:
+#          MYSQL_DATABASE: test
+#          MYSQL_USER: default
+#          MYSQL_PASSWORD: root
+#          MYSQL_ROOT_PASSWORD: root
+#        ports:
+#          - 33306:3306
+#        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Start Typesense
+        uses: jirevwe/typesense-github-action@v1.0.1
         with:
-          submodules: 'recursive'
+          typesense-version: ${{ matrix.typesense-version }}
+          typesense-port: 20863
+
+      - name: Curl Typesense
+        run: sleep 10 && curl http://localhost:8108/health
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
 #      - name: Install MySQL
 #        run: |
 #          apt-get update
@@ -63,12 +71,12 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-php-
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
+#      - name: Cache dependencies
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ~/.npm
+#          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
 #      - name: Install Dependencies
 #        run: |
@@ -78,15 +86,15 @@ jobs:
 #        run: |
 #          cp .env.example .env
 
-      - name: Run Typesense
-        uses: jirevwe/typesense-github-action@v1.0.1
-        with:
-          typesense-version: ${{ matrix.typesense-version }}
-          typesense-port: 20863
-          typesense-api-key: xyz
-
-      - name: Curl Typesense
-        run: sleep 10 && curl http://localhost:8108/health
+#      - name: Run Typesense
+#        uses: jirevwe/typesense-github-action@v1.0.1
+#        with:
+#          typesense-version: ${{ matrix.typesense-version }}
+#          typesense-port: 20863
+#          typesense-api-key: xyz
+#
+#      - name: Curl Typesense
+#        run: sleep 10 && curl http://localhost:8108/health
 
 #      - name: Run Migrations and Seeders
 #        run: php artisan migrate --seed
