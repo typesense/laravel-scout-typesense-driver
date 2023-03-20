@@ -37,7 +37,7 @@ jobs:
           MYSQL_PASSWORD: root
           MYSQL_ROOT_PASSWORD: root
         ports:
-          - 3306:3306
+          - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -54,7 +54,7 @@ jobs:
       - name: Create MySQL Database
         run: |
           sudo apt-get update && sudo apt-get install -y mysql-client
-          mysql --host 127.0.0.1 --port 3306 -udefault -proot -e 'GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
+#          mysql --host 127.0.0.1 --port 3306 -udefault -proot -e 'GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
 
 
       - name: Checkout repository
