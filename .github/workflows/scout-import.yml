@@ -33,7 +33,8 @@ jobs:
         uses: jirevwe/typesense-github-action@v1.0.1
         with:
           typesense-version: ${{ matrix.typesense-version }}
-          typesense-port: 20863
+          typesense-port: 8108
+          typesense-api-key: xyz
 
       - name: Curl Typesense
         run: sleep 10 && curl http://localhost:8108/health
