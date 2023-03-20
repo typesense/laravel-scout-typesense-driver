@@ -47,13 +47,6 @@ jobs:
         with:
           repository: arayiksmbatyan/scout-import-tests
 
-      - name: Run Typesense GitHub Action
-        uses: jirevwe/typesense-github-action@v1.0.1
-        with:
-          typesense-version: ${{ matrix.typesense-version }}
-          typesense-port: 8108
-          typesense-api-key: xyz
-
       - name: Composer Validate
         run: composer validate
 
@@ -80,6 +73,13 @@ jobs:
       - name: Prepare Application Environment
         run: |
           cp .env.example .env
+
+      - name: Run Typesense
+        uses: jirevwe/typesense-github-action@v1.0.1
+        with:
+          typesense-version: ${{ matrix.typesense-version }}
+          typesense-port: 8108
+          typesense-api-key: xyz
 
       - name: Run Migrations and Seeders
         run: php artisan migrate --seed
