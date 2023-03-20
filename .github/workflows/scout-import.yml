@@ -29,6 +29,19 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+#      - name: Install MySQL
+#        run: |
+#          apt-get update
+#          apt-get install mysql-server
+#      - name: Start MySQL Server
+#        run: service mysql start
+#
+#      - name: Create MySQL Database
+#        run: |
+#          mysql -e "CREATE DATABASE test;"
+#          mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
+
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -40,14 +53,6 @@ jobs:
           typesense-version: ${{ matrix.typesense-version }}
           typesense-port: 8108
           typesense-api-key: xyz
-
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#        with:
-#          repository: arayiksmbatyan/scout-import-tests
-#          ref: master
-#          token: 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
-#          submodules: 'recursive'
 
       - name: Composer Validate
         run: composer validate
@@ -81,6 +86,3 @@ jobs:
 
       - name: Run Tests
         run: php artisan test
-
-#      - name: Run Tests
-#        run:  vendor/bin/phpunit tests
