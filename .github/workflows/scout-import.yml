@@ -29,6 +29,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
 #      - name: Install MySQL
 #        run: |
 #          apt-get update
@@ -47,17 +51,17 @@ jobs:
 #        with:
 #          repository: arayiksmbatyan/scout-import-tests
 
-      - name: Composer Validate
-        run: composer validate
-
-      - name: Cache Composer Packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+#      - name: Composer Validate
+#        run: composer validate
+#
+#      - name: Cache Composer Packages
+#        id: composer-cache
+#        uses: actions/cache@v2
+#        with:
+#          path: vendor
+#          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-php-
 
       - name: Cache dependencies
         uses: actions/cache@v2
@@ -66,9 +70,9 @@ jobs:
             ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Dependencies
-        run: |
-           composer update --prefer-dist --no-interaction --no-progress
+#      - name: Install Dependencies
+#        run: |
+#           composer update --prefer-dist --no-interaction --no-progress
 
 #      - name: Prepare Application Environment
 #        run: |
