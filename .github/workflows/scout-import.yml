@@ -28,6 +28,18 @@ jobs:
 #          - 33306:3306
 #        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test
+          MYSQL_USER: default
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
@@ -38,23 +50,11 @@ jobs:
 
       - name: Curl Typesense
         run: sleep 10 && curl http://localhost:8108/health
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#        with:
-#          submodules: 'recursive'
-      - name: Install MySQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install mysql-server
-      - name: Start MySQL Server
-        run: sudo service mysql start
 
       - name: Create MySQL Database
         run: |
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
-          sudo mysql -e "CREATE USER 'default'@'localhost' IDENTIFIED BY 'root';"
-          sudo mysql -e "CREATE DATABASE test;"
-          sudo mysql -e "GRANT ALL ON test.* TO 'default'@'localhost' IDENTIFIED BY 'root';"
+          sudo apt-get update && sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port $ -udefault -proot -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
 
 
       - name: Checkout repository
