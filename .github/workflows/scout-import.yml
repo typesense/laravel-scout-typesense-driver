@@ -51,12 +51,13 @@ jobs:
       - name: Curl Typesense
         run: sleep 10 && curl http://localhost:8108/health
 
-      - name: Create MySQL Database
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install mysql-client
+      - name: Run MySQL client
+        run: sudo service mysql start
+      - name: Run SQL script
         run: |
-          sudo apt update && sudo apt install mysql-server
-          sudo systemctl start mysql.service
-          sudo mysql -e "ALTER USER 'default'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
-          mysql -udefault -proot -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
+          mysql -h 127.0.0.1 -u root -p'root' -e "CREATE DATABASE test;"
 
 
       - name: Checkout repository
