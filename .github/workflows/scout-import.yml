@@ -61,21 +61,17 @@ jobs:
 
 
       - name: Set up MySQL
-        uses: mysql-action/mysql@v2
+        uses: mirromutth/mysql-action@v1.1
         with:
-          mysql-version: '8.0'
-          mysql-host: localhost
-          mysql-port: 3306
-          mysql-user: default
-          mysql-password: root
-
-      - name: Create MySQL User
-        run: |
-          mysql -e "CREATE DATABASE 'test';"
-
-      - name: Grant Permissions to MySQL User
-        run: |
-          mysql -e "GRANT ALL PRIVILEGES ON test.* TO 'default'@'localhost';"
+          host port: 3306 # Optional, default value is 3306. The port of host
+          container port: 3306 # Optional, default value is 3306. The port of container
+          character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+          collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+          mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+          mysql database: 'test' # Optional, default value is "test". The specified database which will be create
+          mysql root password: 'root' # Required if "mysql user" is empty, default is empty. The root superuser password
+          mysql user: 'default' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: 'root' # Required if "mysql user" exists. The password for the "mysql user"
 
       - name: Checkout repository
         uses: actions/checkout@v2
