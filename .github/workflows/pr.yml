@@ -1,43 +1,29 @@
-name: Run Project Tests
+name: Run Package Tests
 
 on:
   pull_request:
     branches: [master]
 
 jobs:
-  scout-import-test:
+  tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       matrix:
         node-version: [16.x]
         typesense-version: [0.24.0]
-
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
       - name: Start Typesense
         uses: jirevwe/typesense-github-action@v1.0.1
         with:
           typesense-version: ${{ matrix.typesense-version }}
           typesense-port: 8108
           typesense-api-key: xyz
-
-      - name: Curl Typesense
-        run: sleep 10 && curl http://localhost:8108/health
-
-      - name: Install MySQL client
-        run: sudo apt-get update && sudo apt-get install mysql-client
-
-      - name: Run MySQL client
-        run: sudo service mysql start
-
-      - name: Run SQL script
-        run: |
-          mysql -h 127.0.0.1 -u root -p'root' -e "CREATE DATABASE test;"
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          repository: arayiksmbatyan/scout-import-tests
 
       - name: Composer Validate
         run: composer validate
@@ -58,19 +44,9 @@ jobs:
             ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Prepare Application Environment
-        run: |
-          cp .env.example .env
-
       - name: Install Dependencies
         run: |
            composer update --prefer-dist --no-interaction --no-progress
 
-      - name: Generate Application Key
-        run: php artisan key:generate
-
-      - name: Run Migrations and Seeders
-        run: php artisan migrate --seed
-
       - name: Run Tests
-        run: php artisan test
+        run:  vendor/bin/phpunit tests
