@@ -73,6 +73,14 @@ jobs:
           mysql user: 'default' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
           mysql password: 'root' # Required if "mysql user" exists. The password for the "mysql user"
 
+      - name: Create MySQL User
+        run: |
+          mysql -e "CREATE DATABASE 'test';"
+
+      - name: Grant Permissions to MySQL User
+        run: |
+          mysql -e "GRANT ALL PRIVILEGES ON test.* TO 'default'@'localhost';"
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
