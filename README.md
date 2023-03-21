@@ -2,7 +2,7 @@
     <img src="https://banners.beyondco.de/Laravel%20Scout%20Driver%20For%20Typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-scout-typesense-driver&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=75px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
 </p>
 
-This package makes it easy to add full text search support to your models with Laravel 7.\* to 9.\*. 
+This package makes it easy to add full text search support to your models with Laravel 7.\* to 10.\*. 
 
 <!--
 
@@ -92,7 +92,7 @@ In your `config/scout.php` add:
 
 ## Usage
 
-If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/8.x/scout) first.
+If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/10.x/scout) first.
 
 After you have installed scout and the Typesense driver, you need to add the
 `Searchable` trait to your models that you want to make searchable. Additionaly,
@@ -156,7 +156,7 @@ class Todo extends Model implements TypesenseDocument
     }
 
      /**
-     * The fields to be queried against. See https://typesense.org/docs/0.21.0/api/documents.html#search.
+     * The fields to be queried against. See https://typesense.org/docs/0.24.0/api/search.html.
      *
      * @return array
      */
@@ -201,14 +201,14 @@ $searchRequests = [
     ]
 ];
 
-Todo::searchMulti($searchRequests)->paginateRaw();
+Todo::search('')->searchMulti($searchRequests)->paginateRaw();
 ```
 
 ### Generate Scoped Search Key
 
 You can generate scoped search API keys that have embedded search parameters in them. This is useful in a few different scenarios:
 1. You can index data from multiple users/customers in a single Typesense collection (aka multi-tenancy) and create scoped search keys with embedded `filter_by` parameters that only allow users access to their own subset of data.
-2. You can embed any [search parameters](https://typesense.org/docs/0.23.1/api/search.html#search-parameters) (for eg: `exclude_fields` or `limit_hits`) to prevent users from being able to modify it client-side.
+2. You can embed any [search parameters](https://typesense.org/docs/0.24.0/api/search.html#search-parameters) (for eg: `exclude_fields` or `limit_hits`) to prevent users from being able to modify it client-side.
 
 When you use these scoped search keys in a search API call, the parameters you embedded in them will be automatically applied by Typesense and users will not be able to override them.
 
