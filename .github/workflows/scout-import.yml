@@ -57,7 +57,7 @@ jobs:
           sudo chmod 777 /etc/mysql/conf.d/mysql.cnf
           echo "bind-address           = 0.0.0.0" >> /etc/mysql/conf.d/mysql.cnf
           sudo service mysql restart
-          mysql --host 127.0.0.1 --port 3306 -udefault -proot -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
+          sudo mysql -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
 
 
       - name: Checkout repository
