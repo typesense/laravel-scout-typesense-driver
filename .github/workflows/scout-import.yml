@@ -51,14 +51,31 @@ jobs:
       - name: Curl Typesense
         run: sleep 10 && curl http://localhost:8108/health
 
-      - name: Create MySQL Database
-        run: |
-          sudo apt-get update && sudo apt-get install -y mysql-client
-          sudo chmod 777 /etc/mysql/conf.d/mysql.cnf
-          echo "bind-address           = 0.0.0.0" >> /etc/mysql/conf.d/mysql.cnf
-          sudo service mysql restart
-          sudo mysql -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
+#      - name: Create MySQL Database
+#        run: |
+#          sudo apt-get update && sudo apt-get install -y mysql-client
+#          sudo chmod 777 /etc/mysql/conf.d/mysql.cnf
+#          echo "bind-address           = 0.0.0.0" >> /etc/mysql/conf.d/mysql.cnf
+#          sudo service mysql restart
+#          sudo mysql -e 'CREATE SCHEMA `test` CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `test`.* TO default@localhost IDENTIFIED BY "root"; FLUSH PRIVILEGES;'
 
+
+      - name: Set up MySQL
+        uses: mysql-action/mysql@v2
+        with:
+          mysql-version: '8.0'
+          mysql-host: localhost
+          mysql-port: 3306
+          mysql-user: default
+          mysql-password: root
+
+      - name: Create MySQL User
+        run: |
+          mysql -e "CREATE DATABASE 'test';"
+
+      - name: Grant Permissions to MySQL User
+        run: |
+          mysql -e "GRANT ALL PRIVILEGES ON test.* TO 'default'@'localhost';"
 
       - name: Checkout repository
         uses: actions/checkout@v2
