@@ -92,6 +92,9 @@ jobs:
         run: |
            composer update --prefer-dist --no-interaction --no-progress
 
+      - name: Generate Application Key
+        run: php artisan key:generate
+
       - name: Run Migrations and Seeders
         run: php artisan migrate --seed
 
