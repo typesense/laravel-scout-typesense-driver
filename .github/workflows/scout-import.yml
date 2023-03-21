@@ -84,13 +84,13 @@ jobs:
             ~/.npm
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Dependencies
-        run: |
-           composer update --prefer-dist --no-interaction --no-progress
-
       - name: Prepare Application Environment
         run: |
           cp .env.example .env
+
+      - name: Install Dependencies
+        run: |
+           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run Migrations and Seeders
         run: php artisan migrate --seed
