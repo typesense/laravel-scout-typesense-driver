@@ -149,7 +149,13 @@ class Typesense
          */
         $document = $collectionIndex->getDocuments()[(string) $modelId];
 
-        return $document->delete();
+        try {
+            $document->retrieve();
+
+            return $document->delete();
+        } catch (\Exception $exception) {
+            return [];
+        }
     }
 
     /**
