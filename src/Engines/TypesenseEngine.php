@@ -168,8 +168,10 @@ class TypesenseEngine extends Engine
             $models->each->pushSoftDeleteMetadata();
         }
 
-        $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
-            ->toArray());
+        if (is_null($models->first()?->deleted_at)) {
+            $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+                ->toArray());
+        }
     }
 
     /**
