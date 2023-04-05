@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Config;
  *
  * @author  Abdullah Al-Faqeir <abdullah@devloops.net>
  */
+
 class TypesenseEngine extends Engine
 {
     /**
