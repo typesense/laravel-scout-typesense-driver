@@ -228,14 +228,6 @@ class TypesenseEngine extends Engine
     private function buildSearchParams(Builder $builder, int $page, int|null $perPage): array
     {
         $params = [
-            'q' => $builder->query,
-            'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'filter_by' => $this->filters($builder),
-            'per_page' => $perPage,
-            'page' => $page,
-            'highlight_start_tag' => $this->startTag,
-            'highlight_end_tag' => $this->endTag,
-            'exhaustive_search' => $this->exhaustiveSearch,
             'q'                          => $builder->query,
             'query_by'                   => implode(',', $builder->model->typesenseQueryBy()),
             'filter_by'                  => $this->filters($builder),
