@@ -108,6 +108,11 @@ class TypesenseEngine extends Engine
     private string $facetQuery = '';
 
     /**
+     * @var string
+     */
+    private string $infix = 'off';
+
+    /**
      * @var array
      */
     private array $includeFields = [];
@@ -242,6 +247,7 @@ class TypesenseEngine extends Engine
             'prioritize_exact_match'     => $this->prioritizeExactMatch,
             'enable_overrides'           => $this->enableOverrides,
             'highlight_affix_num_tokens' => $this->highlightAffixNumTokens,
+            'infix'                      => $this->infix,
         ];
 
         if ($this->limitHits > 0) {
@@ -766,6 +772,21 @@ class TypesenseEngine extends Engine
     public function setHighlightAffixNumTokens(int $highlightAffixNumTokens): static
     {
         $this->highlightAffixNumTokens = $highlightAffixNumTokens;
+
+        return $this;
+    }
+
+    /**
+     * Set the infix search option for the field.
+     *
+     * @param string $infix The infix search option to enable for the field.
+     *                      Possible values: "off" (disabled, default), "always" (along with regular search),
+     *                      "fallback" (if regular search produces no results).
+     * @return $this
+     */
+    public function setInfix(string $infix): static
+    {
+        $this->infix = $infix;
 
         return $this;
     }
