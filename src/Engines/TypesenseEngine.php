@@ -168,7 +168,7 @@ class TypesenseEngine extends Engine
             $models->each->pushSoftDeleteMetadata();
         }
 
-        if (!$this->usesSoftDelete($models->first()) || is_null($models->first()?->deleted_at)) {
+        if (!$this->usesSoftDelete($models->first()) || is_null($models->first()?->deleted_at) || config('scout.soft_delete', false)) {
             $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
                 ->toArray());
         }
