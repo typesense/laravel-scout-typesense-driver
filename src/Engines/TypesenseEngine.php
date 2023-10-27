@@ -145,7 +145,7 @@ class TypesenseEngine extends Engine
     /**
      * @var string|null
      */
-    private ?string $prefix;
+    private ?string $prefix = null;
 
     /**
      * TypesenseEngine constructor.
