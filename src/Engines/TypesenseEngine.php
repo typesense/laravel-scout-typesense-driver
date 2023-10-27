@@ -412,7 +412,7 @@ class TypesenseEngine extends Engine
 
         return $whereFilter . (
             ($whereFilter !== '' && $whereInFilter !== '') ? ' && ' : ''
-        ) . $whereInFilter;
+            ) . $whereInFilter;
     }
 
     /**
