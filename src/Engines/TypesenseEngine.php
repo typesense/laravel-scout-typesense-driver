@@ -143,6 +143,11 @@ class TypesenseEngine extends Engine
     private array $optionsMulti = [];
 
     /**
+     * @var string|null
+     */
+    private ?string $prefix;
+
+    /**
      * TypesenseEngine constructor.
      *
      * @param Typesense $typesense
@@ -306,6 +311,10 @@ class TypesenseEngine extends Engine
             }
             $params['sort_by'] .= $this->parseOrderBy($builder->orders);
         }
+        
+        if (!empty($this->prefix)) {
+            $params['prefix'] = $this->prefix;
+        }
 
         return $params;
     }
@@ -403,7 +412,7 @@ class TypesenseEngine extends Engine
 
         return $whereFilter . (
             ($whereFilter !== '' && $whereInFilter !== '') ? ' && ' : ''
-            ) . $whereInFilter;
+        ) . $whereInFilter;
     }
 
     /**
@@ -846,6 +855,25 @@ class TypesenseEngine extends Engine
     public function setPrioritizeExactMatch(bool $prioritizeExactMatch): static
     {
         $this->prioritizeExactMatch = $prioritizeExactMatch;
+
+        return $this;
+    }
+
+    /**
+     * Indicates that the last word in the query should be treated as a prefix, and not as a whole word. 
+     * 
+     * You can also control the behavior of prefix search on a per field basis.
+     * For example, if you are querying 3 fields and want to enable prefix searching only on the first field, use ?prefix=true,false,false. 
+     * The order should match the order of fields in query_by. 
+     * If a single value is specified for prefix the same value is used for all fields specified in query_by.
+     *
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function setPrefix(string $prefix): static
+    {
+        $this->prefix = $prefix;
 
         return $this;
     }

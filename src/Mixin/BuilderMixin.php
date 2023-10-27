@@ -347,6 +347,21 @@ class BuilderMixin
     }
 
     /**
+     * @param string $prefix
+     *
+     * @return \Closure
+     */
+    public function setPrefix(): Closure
+    {
+        return function (string $prefix) {
+            $this->engine()
+                ->setPrefix($prefix);
+
+            return $this;
+        };
+    }
+
+    /**
      * @param bool $enableOverrides
      *
      * @return \Closure
