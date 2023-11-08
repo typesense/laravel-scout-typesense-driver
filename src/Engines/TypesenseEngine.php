@@ -913,4 +913,17 @@ class TypesenseEngine extends Engine
     {
         return $this->typesense->deleteCollection($name);
     }
+    
+    /**
+     * Delete all search indexes.
+     *
+     * @return void
+     */
+    public function deleteAllIndexes() {
+        $indexes = $this->typesense->getClient()->getCollections()->retrieve();
+
+        foreach($indexes as $index) {
+            $this->typesense->deleteCollection($index['name']);
+        }
+    }
 }
