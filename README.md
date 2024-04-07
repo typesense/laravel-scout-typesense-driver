@@ -1,9 +1,9 @@
 # Laravel Scout Typesense Driver 
 
-This package makes it easy to add full text search support to your models with Laravel 7.\* to 10.\*. 
+This package makes it easy to add full text search support to your models with Laravel 7.\* to 11.\*. 
 
 > [!IMPORTANT] 
-> The features from the Scout driver in this repo have been merged upstream into [Laravel Scout natively](https://laravel.com/docs/10.x/scout#typesense).
+> The features from the Scout driver in this repo have been merged upstream into [Laravel Scout natively](https://laravel.com/docs/11.x/scout#typesense).
 > 
 > So we've temporarily paused development in this repo and plan to instead address any issues or improvements in the native [Laravel Scout](https://github.com/laravel/scout) driver instead.
 > 
@@ -99,7 +99,7 @@ In your `config/scout.php` add:
 
 ## Usage
 
-If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/10.x/scout) first.
+If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/11.x/scout) first.
 
 After you have installed scout and the Typesense driver, you need to add the
 `Searchable` trait to your models that you want to make searchable. Additionaly,
