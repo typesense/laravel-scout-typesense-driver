@@ -272,6 +272,21 @@ class BuilderMixin
     }
 
     /**
+     * @param string $infix
+     *
+     * @return \Closure
+     */
+    public function setInfix(): Closure
+    {
+        return function (string $infix) {
+            $this->engine()
+                ->setInfix($infix);
+
+            return $this;
+        };
+    }
+
+    /**
      * @param int $snippetThreshold
      *
      * @return \Closure
