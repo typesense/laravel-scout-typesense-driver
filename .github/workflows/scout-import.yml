@@ -35,7 +35,7 @@ jobs:
           mysql -h 127.0.0.1 -u root -p'root' -e "CREATE DATABASE test;"
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: arayiksmbatyan/scout-import-tests
 
@@ -44,7 +44,7 @@ jobs:
 
       - name: Cache Composer Packages
         id: composer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -52,7 +52,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
