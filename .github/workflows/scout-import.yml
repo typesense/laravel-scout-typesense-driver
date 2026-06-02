@@ -10,7 +10,6 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [16.x]
         typesense-version: [0.24.0]
 
     steps:
@@ -50,13 +49,6 @@ jobs:
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Prepare Application Environment
         run: |
