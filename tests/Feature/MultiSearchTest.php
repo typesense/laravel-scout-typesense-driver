@@ -10,10 +10,11 @@ class MultiSearchTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function defineDatabaseMigrations()
+    protected function defineDatabaseMigrationsAfterDatabaseRefreshed()
     {
+        parent::defineDatabaseMigrationsAfterDatabaseRefreshed();
+
         $this->setUpFaker();
-        $this->loadLaravelMigrations();
 
         SearchableUserModel::create([
             'name' => 'Laravel Typsense',

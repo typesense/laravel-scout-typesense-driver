@@ -25,6 +25,11 @@ abstract class TestCase extends Orchestra
         $this->mergeConfigFrom($app, __DIR__.'/../config/scout.php', 'scout');
     }
 
+    protected function defineDatabaseMigrationsAfterDatabaseRefreshed()
+    {
+        $this->loadLaravelMigrations();
+    }
+
     private function mergeConfigFrom($app, $path, $key)
     {
         $config = $app['config']->get($key, []);
