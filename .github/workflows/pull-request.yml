@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        typesense-version: [0.24.0]
+        typesense-version: ["0.24.0", "30.1"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
