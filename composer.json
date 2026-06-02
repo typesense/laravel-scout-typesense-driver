@@ -41,19 +41,16 @@
     },
     "require": {
         "php": "^8.0",
-        "laravel/scout": "^8.0|^9.0|^10.0",
-        "illuminate/bus": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/contracts": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/database": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/pagination": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/queue": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "illuminate/support": "^7.0|^8.0|^9.0|^10.0|^11.0",
-        "typesense/typesense-php": "^4.2"
+        "laravel/scout": "^10.0|^11.0|^12.0",
+        "illuminate/bus": "^10.0|^11.0|^12.0",
+        "illuminate/contracts": "^10.0|^11.0|^12.0",
+        "illuminate/database": "^10.0|^11.0|^12.0",
+        "illuminate/pagination": "^10.0|^11.0|^12.0",
+        "illuminate/queue": "^10.0|^11.0|^12.0",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "typesense/typesense-php": "^6.1.0-RC2"
     },
     "config": {
-        "platform": {
-            "php": "8.0"
-        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
@@ -65,7 +62,8 @@
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0|^10.5",
         "mockery/mockery": "^1.3",
-        "orchestra/testbench": "^6.17|^7.0|^8.0|^9.0",
+        "orchestra/testbench": "^8.36|^9.15|^10.8",
         "symfony/http-client": "^5.4|^7.0"
-    }
+    },
+    "prefer-stable": true
 }
