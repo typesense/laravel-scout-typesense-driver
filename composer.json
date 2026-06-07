@@ -60,10 +60,10 @@
         "typesense/typesense-php": "Required to use the Typesense php client."
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0|^9.0|^10.5",
-        "mockery/mockery": "^1.3",
-        "orchestra/testbench": "^8.36|^9.15|^10.8",
-        "symfony/http-client": "^5.4|^7.0"
+        "phpunit/phpunit": "^8.0|^9.0|^10.5|^11.5|^12.5|^13.2",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^8.36|^9.15|^10.8|^11.1",
+        "symfony/http-client": "^5.4|^7.0|^8.1"
     },
     "prefer-stable": true
 }
