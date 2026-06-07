@@ -1,8 +1,15 @@
-<p align="center">
-    <img src="https://banners.beyondco.de/Laravel%20Scout%20Driver%20For%20Typesense.png?theme=dark&packageManager=composer+require&packageName=typesense%2Flaravel-scout-typesense-driver&pattern=architect&style=style_1&description=Easy+Typesense+support+for+Laravel+Scout&md=1&showWatermark=0&fontSize=75px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg">
-</p>
+# Laravel Scout Typesense Driver 
 
-This package makes it easy to add full text search support to your models with Laravel 7.\* to 10.\*. 
+This package makes it easy to add full text search support to your models with Laravel 10.\* to 12.\*. 
+
+> [!IMPORTANT] 
+> The features from the Scout driver in this repo have been merged upstream into [Laravel Scout natively](https://laravel.com/docs/11.x/scout#typesense).
+> 
+> So we've temporarily paused development in this repo and plan to instead address any issues or improvements in the native [Laravel Scout](https://github.com/laravel/scout) driver instead.
+> 
+> If there are any Typesense-specific features that would be hard to implement in Laravel Scout natively (since we need to maintain consistency with all the other drivers), then at that point we plan to add those features into this driver and maintain it as a "Scout Extended Driver" of sorts. But it's too early to tell if we'd want to do this, so we're in a holding pattern on this repo for now.
+> 
+> In the meantime, we recommend switching to the native Laravel Scout driver and report any issues in the [Laravel Scout repo](https://github.com/laravel/scout).
 
 <!--
 
@@ -12,18 +19,39 @@ This package makes it easy to add full text search support to your models with L
 
 ## Contents
 
+- [Development](#development)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Migrating from devloopsnet/laravel-typesense](#migrating-from-devloopsnetlaravel-typesense)
 - [Authors](#authors)
 - [License](#license)
 
+## Development
+
+This repository includes a Nix flake with PHP 8.3 and Composer:
+
+```bash
+nix develop
+composer update --prefer-dist --no-interaction --no-progress
+```
+
+You can also run the Composer install helper directly:
+
+```bash
+nix run .#install
+```
+
+The package tests expect Typesense to be reachable at `http://localhost:8108` with API key `xyz`, matching the CI workflow. Once Typesense is running:
+
+```bash
+nix run .#test
+```
 
 ## Installation
 The Typesense PHP SDK uses httplug to interface with various PHP HTTP libraries through a single API. 
 
 First, install the correct httplug adapter based on your `guzzlehttp/guzzle` version. For example, if you're on 
-Laravel 8, which includes Guzzle 7, then run this:
+Laravel 10, which includes Guzzle 7, then run this:
 
 ```bash
 composer require php-http/guzzle7-adapter
@@ -92,7 +120,7 @@ In your `config/scout.php` add:
 
 ## Usage
 
-If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/10.x/scout) first.
+If you are unfamiliar with Laravel Scout, we suggest reading it's [documentation](https://laravel.com/docs/11.x/scout) first.
 
 After you have installed scout and the Typesense driver, you need to add the
 `Searchable` trait to your models that you want to make searchable. Additionaly,

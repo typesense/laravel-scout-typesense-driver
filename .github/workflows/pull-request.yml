@@ -10,11 +10,10 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        node-version: [16.x]
-        typesense-version: [0.24.0]
+        typesense-version: ["0.24.0", "30.1"]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
 
@@ -30,19 +29,12 @@ jobs:
 
       - name: Cache Composer Packages
         id: composer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php-
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Dependencies
         run: |

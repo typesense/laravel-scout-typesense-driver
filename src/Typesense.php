@@ -149,7 +149,13 @@ class Typesense
          */
         $document = $collectionIndex->getDocuments()[(string) $modelId];
 
-        return $document->delete();
+        try {
+            $document->retrieve();
+
+            return $document->delete();
+        } catch (\Exception $exception) {
+            return [];
+        }
     }
 
     /**
@@ -186,7 +192,7 @@ class Typesense
         $result = [];
         foreach ($importedDocuments as $importedDocument) {
             if (!$importedDocument['success']) {
-                throw new TypesenseClientError("Error importing document: ${importedDocument['error']}");
+                throw new TypesenseClientError("Error importing document: {$importedDocument['error']}");
             }
 
             $result[] = new TypesenseDocumentIndexResponse($importedDocument['code'] ?? 0, $importedDocument['success'], $importedDocument['error'] ?? null, json_decode($importedDocument['document'] ?? '[]', true, 512, JSON_THROW_ON_ERROR));

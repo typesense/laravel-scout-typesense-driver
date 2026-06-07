@@ -272,6 +272,21 @@ class BuilderMixin
     }
 
     /**
+     * @param string $infix
+     *
+     * @return \Closure
+     */
+    public function setInfix(): Closure
+    {
+        return function (string $infix) {
+            $this->engine()
+                ->setInfix($infix);
+
+            return $this;
+        };
+    }
+
+    /**
      * @param int $snippetThreshold
      *
      * @return \Closure
@@ -341,6 +356,21 @@ class BuilderMixin
         return function (bool $prioritizeExactMatch) {
             $this->engine()
                 ->setPrioritizeExactMatch($prioritizeExactMatch);
+
+            return $this;
+        };
+    }
+
+    /**
+     * @param string $prefix
+     *
+     * @return \Closure
+     */
+    public function setPrefix(): Closure
+    {
+        return function (string $prefix) {
+            $this->engine()
+                ->setPrefix($prefix);
 
             return $this;
         };

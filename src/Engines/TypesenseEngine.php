@@ -108,6 +108,11 @@ class TypesenseEngine extends Engine
     private string $facetQuery = '';
 
     /**
+     * @var string
+     */
+    private string $infix = 'off';
+
+    /**
      * @var array
      */
     private array $includeFields = [];
@@ -143,6 +148,11 @@ class TypesenseEngine extends Engine
     private array $optionsMulti = [];
 
     /**
+     * @var string|null
+     */
+    private ?string $prefix = null;
+
+    /**
      * TypesenseEngine constructor.
      *
      * @param Typesense $typesense
@@ -170,6 +180,11 @@ class TypesenseEngine extends Engine
             if (!empty(array_intersect(array_keys($changes), array_keys($searchableArray)))) {
                 $this->updateAndImport($models);
             }
+        }
+
+        if (!$this->usesSoftDelete($models->first()) || is_null($models->first()?->deleted_at) || config('scout.soft_delete', false)) {
+            $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+                ->toArray());
         }
     }
 
@@ -227,14 +242,6 @@ class TypesenseEngine extends Engine
     private function buildSearchParams(Builder $builder, int $page, int|null $perPage): array
     {
         $params = [
-            'q' => $builder->query,
-            'query_by' => implode(',', $builder->model->typesenseQueryBy()),
-            'filter_by' => $this->filters($builder),
-            'per_page' => $perPage,
-            'page' => $page,
-            'highlight_start_tag' => $this->startTag,
-            'highlight_end_tag' => $this->endTag,
-            'exhaustive_search' => $this->exhaustiveSearch,
             'q'                          => $builder->query,
             'query_by'                   => implode(',', $builder->model->typesenseQueryBy()),
             'filter_by'                  => $this->filters($builder),
@@ -249,6 +256,7 @@ class TypesenseEngine extends Engine
             'prioritize_exact_match'     => $this->prioritizeExactMatch,
             'enable_overrides'           => $this->enableOverrides,
             'highlight_affix_num_tokens' => $this->highlightAffixNumTokens,
+            'infix'                      => $this->infix,
         ];
 
         if ($this->limitHits > 0) {
@@ -304,6 +312,10 @@ class TypesenseEngine extends Engine
                 $params['sort_by'] = '';
             }
             $params['sort_by'] .= $this->parseOrderBy($builder->orders);
+        }
+        
+        if (!empty($this->prefix)) {
+            $params['prefix'] = $this->prefix;
         }
 
         return $params;
@@ -797,6 +809,21 @@ class TypesenseEngine extends Engine
     }
 
     /**
+     * Set the infix search option for the field.
+     *
+     * @param string $infix The infix search option to enable for the field.
+     *                      Possible values: "off" (disabled, default), "always" (along with regular search),
+     *                      "fallback" (if regular search produces no results).
+     * @return $this
+     */
+    public function setInfix(string $infix): static
+    {
+        $this->infix = $infix;
+
+        return $this;
+    }
+
+    /**
      * Field values under this length will be fully highlighted, instead of showing a snippet of relevant portion.
      *
      * @param int $snippetThreshold
@@ -864,6 +891,25 @@ class TypesenseEngine extends Engine
     public function setPrioritizeExactMatch(bool $prioritizeExactMatch): static
     {
         $this->prioritizeExactMatch = $prioritizeExactMatch;
+
+        return $this;
+    }
+
+    /**
+     * Indicates that the last word in the query should be treated as a prefix, and not as a whole word. 
+     * 
+     * You can also control the behavior of prefix search on a per field basis.
+     * For example, if you are querying 3 fields and want to enable prefix searching only on the first field, use ?prefix=true,false,false. 
+     * The order should match the order of fields in query_by. 
+     * If a single value is specified for prefix the same value is used for all fields specified in query_by.
+     *
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function setPrefix(string $prefix): static
+    {
+        $this->prefix = $prefix;
 
         return $this;
     }
