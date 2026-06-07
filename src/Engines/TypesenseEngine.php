@@ -37,6 +37,11 @@ class TypesenseEngine extends Engine
      */
     private int $groupByLimit = 3;
 
+     /**
+     * @var int|string
+     */
+    private int|string $numTypos = 2;
+
     /**
      * @var string
      */
@@ -253,6 +258,7 @@ class TypesenseEngine extends Engine
             'enable_overrides'           => $this->enableOverrides,
             'highlight_affix_num_tokens' => $this->highlightAffixNumTokens,
             'infix'                      => $this->infix,
+            'num_typos'                  => $this->numTypos,
         ];
 
         if ($this->limitHits > 0) {
