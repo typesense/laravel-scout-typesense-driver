@@ -177,10 +177,14 @@ class TypesenseEngine extends Engine
      */
     public function update($models): void
     {
-        $collection = $this->typesense->getCollectionIndex($models->first());
-
-        if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
-            $models->each->pushSoftDeleteMetadata();
+        if (app()->runningInConsole()) {
+            $this->updateAndImport($models);
+        } else {
+            $changes = $models->first()->getDirty();
+            $searchableArray = $models->first()->toSearchableArray();
+            if (!empty(array_intersect(array_keys($changes), array_keys($searchableArray)))) {
+                $this->updateAndImport($models);
+            }
         }
 
         if (!$this->usesSoftDelete($models->first()) || is_null($models->first()?->deleted_at) || config('scout.soft_delete', false)) {
@@ -357,6 +361,25 @@ class TypesenseEngine extends Engine
         }
 
         return implode(',', $sortByArr);
+    }
+
+    /**
+     * @param $models
+     * @return void
+     * @throws \Http\Client\Exception
+     * @throws \JsonException
+     * @throws \Typesense\Exceptions\TypesenseClientError
+     */
+    private function updateAndImport($models): void
+    {
+        $collection = $this->typesense->getCollectionIndex($models->first());
+
+        if ($this->usesSoftDelete($models->first()) && config('scout.soft_delete', false)) {
+            $models->each->pushSoftDeleteMetadata();
+        }
+
+        $this->typesense->importDocuments($collection, $models->map(fn($m) => $m->toSearchableArray())
+            ->toArray());
     }
 
     /**
